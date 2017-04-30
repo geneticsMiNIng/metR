@@ -1,0 +1,121 @@
+---
+title: "Regresja kwantylowa"
+author: "A.Brodecka"
+date: "29 kwietnia 2017"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = FALSE, include= FALSE}
+setwd('/media/ola/EEAABE9FAABE642D/metylacja')
+source('/media/ola/EEAABE9FAABE642D/metylacja/metr/Rcodes/function_preprocessing.R')
+source('/media/ola/EEAABE9FAABE642D/metylacja/metr/Rcodes/libraries.R')
+
+
+data <- readRDS('dane/to_analysis.rds')
+data %>% mutate(met = numCs/(numTs + numCs)) -> data
+
+options(scipen=10000)
+
+```
+
+## Podzia³ po gapach (max = 100)
+
+```{r}
+
+data <- create_tiles(data, 100) 
+data %>% group_by(tiles, group) %>% summarise(mean_met = mean(met), n = n(), n2 = n()*n()) %>% 
+  spread(group, mean_met) %>% mutate(diff_met = abs(EK - EU)) -> data_met
+
+head(data_met)
+
+```
+
+
+### Regresja z kwantylem 0.9
+
+```{r}
+fit1 <- rq(diff_met~n,tau=.90, data = data_met)
+summ1 <- summary(fit1)
+
+print(summ1)
+
+wynik <- data.frame(n = 1:20, est = summ1$coefficients[1,1] + 1:20 * summ1$coefficients[2,1])
+wynik
+```
+
+
+```{r}
+fit2 <- rq(diff_met~n + n2,tau=.90, data = data_met)
+summ2 <- summary(fit2)
+
+print(summ2)
+
+wynik <- data.frame(n = 1:20, est = summ2$coefficients[1,1] + 1:20 * summ2$coefficients[2,1] + (1:20)^2 * summ2$coefficients[3,1])
+
+wynik
+
+```
+
+
+```{r}
+ggplot(data_met, aes(x = n, y = diff_met)) + geom_point() + ggtitle('Roznica w metylacji od pokrycia') +
+  stat_function(fun = function(x) {summ2$coefficients[3,1] * x^2 + summ2$coefficients[2,1] * x + summ2$coefficients[1,1] }, col = 'red') + stat_function(fun = function(x){ summ1$coefficients[2,1] * x + summ1$coefficients[1,1] }, col = 'blue')
+```
+
+
+## Podzia³ na regiony o d³ugoœci 1000
+
+
+```{r}
+#data <- readRDS('dane/to_analysis.rds')
+#data %>% mutate(met = numCs/(numTs + numCs)) -> data
+data$tiles = data$poz %/% 1000
+data$tiles <- as.factor(data$tiles)
+
+data %>% group_by(tiles, group, chr) %>% summarise(mean_met = mean(met), n = n(), n2 = n() * n()) %>% 
+  spread(group, mean_met) %>% mutate(diff_met = abs(EK - EU)) -> data_met2
+
+head(data_met2)
+
+
+```
+
+
+
+### Regresja z kwantylem 0.9
+
+
+```{r}
+fit3 <- rq(diff_met~n,tau=.90, data = data_met2)
+summ3 <- summary(fit3)
+
+print(summ3)
+
+wynik <- data.frame(n = 1:20, est = summ3$coefficients[1,1] + 1:20 * summ3$coefficients[2,1])
+wynik
+```
+
+```{r}
+fit4 <- rq(diff_met~n + n2,tau=.90, data = data_met2)
+summ4 <- summary(fit4)
+
+print(summ4)
+
+wynik2 <- data.frame(n = 1:20, est = summ4$coefficients[1,1] + 1:20 * summ4$coefficients[2,1])
+wynik2
+```
+
+
+```{r}
+ggplot(data_met2, aes(x = n, y = diff_met)) + geom_point() + ggtitle('Roznica w metylacji od pokrycia') +
+  stat_function(fun = function(x) {summ4$coefficients[3,1] * x^2 + summ4$coefficients[2,1] * x + summ4$coefficients[1,1] }, col = 'red') + stat_function(fun = function(x){ summ3$coefficients[2,1] * x + summ3$coefficients[1,1] }, col = 'blue')
+
+```
+

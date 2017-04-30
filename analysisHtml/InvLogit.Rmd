@@ -1,0 +1,138 @@
+---
+title: "Analiza iloraz inverse logit"
+author: "A.Brodecka"
+date: "29 kwietnia 2017"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = FALSE, include= FALSE}
+setwd('/media/ola/EEAABE9FAABE642D/metylacja')
+source('/media/ola/EEAABE9FAABE642D/metylacja/metr/Rcodes/function_preprocessing.R')
+source('/media/ola/EEAABE9FAABE642D/metylacja/metr/Rcodes/function_visualization.R')
+source('/media/ola/EEAABE9FAABE642D/metylacja/metr/Rcodes/libraries.R')
+
+
+data <- readRDS('dane/to_analysis.rds')
+beta_mixed <- readRDS('random_beta.rds')
+corr_mixed <- readRDS('wyniki/corr_mixed.rds')
+data_toplot <- readRDS('dane/data_toplot.rds')
+
+options(scipen=10000)
+
+```
+
+
+## Mixed:
+
+```{r}
+data %>% mutate(met = numCs/(numTs + numCs)) -> data
+data$tiles = data$poz %/% 1000
+
+data %>% group_by(tiles, chr) %>% summarise(mean_met = mean(met), n = n()) %>%
+  mutate(start = tiles * 1000) -> avg
+
+
+beta_mixed %>% left_join(avg, by = c("start" = "start", "chr" = "chr")) %>%
+  mutate(p0 = exp(mean_met)/(1+exp(mean_met)), p1 = exp(mean_met + beta)/(1+exp(mean_met+ beta))) %>%
+  mutate(dist = p1/p0) %>% arrange(desc(dist)) -> beta_mixed
+
+ggplot(beta_mixed, aes(y = dist, x = mean_met)) + geom_point(size = 0.1) +
+  ggtitle('p1/p0 w zaleznosci od sredniej globalnej')
+    
+```
+
+
+```{r}
+ggplot(beta_mixed, aes(y = dist, x = n)) + geom_point(size = 0.1) +
+  ggtitle('p1/p0 w zaleznosci od pokrycia')
+
+```
+
+
+```{r}
+ggplot(beta_mixed, aes(y = dist, x = p_value)) + geom_point(size = 0.1) +
+  ggtitle('p1/p0 w zaleznosci od pValue')
+
+```
+
+
+```{r}
+ggplot(beta_mixed, aes(y = p_value, x = n)) + geom_point(size = 0.1) +
+  ggtitle('pValue w zaleznosci od pokrycia')
+
+beta_mixed %>% filter(mean_met <= 0.9 & mean_met >= 0.1) %>% arrange(desc(dist)) -> beta_mixed
+
+```
+
+## Wizualizacja top20
+
+```{r}
+for (i in 1:20){
+  p <- draw_methylation(data_toplot, beta_mixed[i, 'chr'], beta_mixed[i, 'start'],
+  beta_mixed[i, 'end'])
+  print(p)
+}
+
+```
+
+
+## Mixed z efektami losowymi
+
+
+```{r}
+
+corr_mixed %>% left_join(avg, by = c("start" = "start", "chr" = "chr")) %>%
+  mutate(p0 = exp(mean_met)/(1+exp(mean_met)), p1 = exp(mean_met + beta)/(1+exp(mean_met+ beta))) %>%
+  mutate(dist = p1/p0) %>% arrange(desc(dist)) -> corr_mixed
+
+ggplot(corr_mixed, aes(y = dist, x = mean_met)) + geom_point(size = 0.1) +
+  ggtitle('p1/p0 w zaleznosci od sredniej globalnej')
+    
+```
+
+
+```{r}
+ggplot(corr_mixed, aes(y = dist, x = n)) + geom_point(size = 0.1) +
+  ggtitle('p1/p0 w zaleznosci od pokrycia')
+
+```
+
+
+```{r}
+ggplot(corr_mixed, aes(y = dist, x = p_value)) + geom_point(size = 0.1) +
+  ggtitle('p1/p0 w zaleznosci od pValue')
+
+```
+
+
+```{r}
+ggplot(corr_mixed, aes(y = p_value, x = n)) + geom_point(size = 0.1) +
+  ggtitle('pValue w zaleznosci od pokrycia')
+
+corr_mixed %>% filter(mean_met <= 0.9 & mean_met >= 0.1) %>% arrange(desc(dist)) -> corr_mixed
+
+```
+
+## Wizualizacja top20
+
+```{r}
+for (i in 1:20){
+  corr_mixed <- as.data.frame(corr_mixed)
+  corr_mixed$chr <- as.character(corr_mixed$chr)
+  data_toplot$chr <- as.character(data_toplot$chr)
+  
+  p <- draw_methylation(data_toplot, corr_mixed[i, 'chr'], corr_mixed[i, 'start'],
+  corr_mixed[i, 'end'])
+  print(p)
+}
+
+```
+
+
