@@ -1,0 +1,88 @@
+---
+title: "Decyle"
+author: "A.Brodecka"
+date: "29 kwietnia 2017"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = FALSE, include= FALSE}
+setwd('/media/ola/EEAABE9FAABE642D/metylacja')
+source('/media/ola/EEAABE9FAABE642D/metylacja/metR/Rcodes/function_preprocessing.R')
+source('/media/ola/EEAABE9FAABE642D/metylacja/metR/Rcodes/libraries.R')
+
+
+data <- readRDS('dane/to_analysis.rds')
+data %>% mutate(met = numCs/(numTs + numCs)) -> data
+dataa <- data
+
+options(scipen=10000)
+
+```
+
+## Podzia³ po gapach (max = 100)
+
+```{r}
+
+data <- create_tiles(data, 100) 
+data %>% group_by(tiles, group) %>% summarise(mean_met = mean(met), n = n(), n2 = n()*n(),
+                                              n_sqrt = n()^(-1/2), n_sqrt3 = n()^(-1/3), n_ =n()^(-1)) %>% 
+  spread(group, mean_met) %>% mutate(diff_met = abs(EK - EU)) -> data_mets
+
+data_mets %>% group_by(n) %>% summarise(
+  q10 = quantile(diff_met, probs = 0.1 ),
+  q20 = quantile(diff_met, probs = 0.2 ),
+  q30 = quantile(diff_met, probs = 0.3 ),
+  q40 = quantile(diff_met, probs = 0.4 ),
+  q50 = quantile(diff_met, probs = 0.5 ),
+  q60 = quantile(diff_met, probs = 0.6 ),
+  q70 = quantile(diff_met, probs = 0.7 ),
+  q80 = quantile(diff_met, probs = 0.8 ),
+  q90 = quantile(diff_met, probs = 0.9 )) %>% gather(type, decile, -n) -> deciles
+
+ggplot(deciles, aes(x = n, y = decile,  colour = type)) + geom_line() + ggtitle('Decyle w zaleznosci od pokrycia')
+
+```
+
+
+
+
+
+## Podzia³ na regiony o d³ugoœci 1000
+
+
+```{r}
+
+
+
+data$tiles = data$poz %/% 1000
+data$tiles <- as.factor(data$tiles)
+
+data %>% group_by(tiles, group, chr) %>% summarise(mean_met = mean(met), n = n(), n2 = n() * n(),
+                                                   n_sqrt = n()^(-1/2), n_sqrt3 = n()^(-1/3), n_ =n()^(-1)) %>% 
+  spread(group, mean_met) %>% mutate(diff_met = abs(EK - EU)) -> data_met
+
+
+data_met %>% group_by(n) %>% summarise(
+  q10 = quantile(diff_met, probs = 0.1 ),
+  q20 = quantile(diff_met, probs = 0.2 ),
+  q30 = quantile(diff_met, probs = 0.3 ),
+  q40 = quantile(diff_met, probs = 0.4 ),
+  q50 = quantile(diff_met, probs = 0.5 ),
+  q60 = quantile(diff_met, probs = 0.6 ),
+  q70 = quantile(diff_met, probs = 0.7 ),
+  q80 = quantile(diff_met, probs = 0.8 ),
+  q90 = quantile(diff_met, probs = 0.9 )) %>% gather(type, decile, -n) -> deciles2
+
+ggplot(deciles2, aes(x = n, y = decile,  colour = type)) + geom_line() + ggtitle('Decyle w zaleznosci od pokrycia')
+
+
+```
+
+
