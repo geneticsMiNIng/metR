@@ -20,6 +20,8 @@
 #' of prob variable otherwise regions ale increasingly ordered by p.value
 #' @param p.value.reg.corr.mixed if not NULL regions with p.value of prob variable smaller than p.value.log.reg are returned and  decreasingly ordered by absolute value of beta coefficient
 #' of prob variable otherwise regions ale increasingly ordered by p.value
+#' @param beta.coef.max only results which have absolute value of beta.coef less than this parameter are returned from Log.Reg, Reg.Mixed, Reg.Corr.Mixed. This prevent cases when algorithm
+#' did not convergence well
 #' @return list object. Elements of list are results of given methods. The most interesting regions are on the top
 #' @export
 #' @examples
@@ -38,7 +40,9 @@
 
 
 
-find.DMR <- function(data, methods, p.value.log.reg = NULL, p.value.reg.mixed= NULL, p.value.reg.corr.mixed= NULL){
+find.DMR <- function(data, methods, p.value.log.reg = NULL,
+                     p.value.reg.mixed= NULL, p.value.reg.corr.mixed= NULL,
+                     beta.coef.max = 30){
 
 
   if ('tiles.common' %in% colnames(data)) {
@@ -129,11 +133,12 @@ if ('Reg.Log' %in% methods){
 
   if (!is.null(p.value.log.reg)){
     result$Reg.Log <- data %>% do(reg.log(data=.)) %>%
-      filter(p.value < p.value.log.reg) %>% arrange(-abs(beta.coef)) %>% ungroup()
+      filter(p.value < p.value.log.reg, !is.nan(p.value),
+             abs(beta.coef) < beta.coef.max) %>% arrange(-abs(beta.coef)) %>% ungroup()
   }else{
     result$Reg.Log <- data %>% do(reg.log(data=.)) %>%
-      filter(!is.nan(p.value)) %>% arrange(p.value) %>% ungroup()}
-
+      filter(!is.nan(p.value),
+             abs(beta.coef) < beta.coef.max) %>% arrange(p.value) %>% ungroup()}
   }
 
 
@@ -142,10 +147,12 @@ if ('Reg.Mixed' %in% methods){
 
   if (!is.null(p.value.reg.mixed)){
     result$Reg.Mixed <- data %>% do(reg.mixed(data=.)) %>%
-      filter(p.value < p.value.reg.mixed) %>% arrange(-abs(beta.coef)) %>% ungroup()
+      filter(p.value < p.value.reg.mixed, !is.nan(p.value),
+             abs(beta.coef) < beta.coef.max) %>% arrange(-abs(beta.coef)) %>% ungroup()
   }else{
     result$Reg.Mixed <- data %>% do(reg.mixed(data=.)) %>%
-      filter(!is.nan(p.value)) %>% arrange(p.value) %>% ungroup()}
+      filter(!is.nan(p.value),
+             abs(beta.coef) < beta.coef.max) %>% arrange(p.value) %>% ungroup()}
 
 }
 
@@ -156,10 +163,12 @@ if ('Reg.Corr.Mixed' %in% methods){
   acf <- mean.acf.chr[-1]
   if (!is.null(p.value.reg.corr.mixed)){
     result$Reg.Corr.Mixed <- data %>% do(reg.corr.mixed(data=., acf = acf)) %>%
-      filter(p.value < p.value.reg.corr.mixed) %>% arrange(-abs(beta.coef)) %>% ungroup()
+      filter(p.value < p.value.reg.corr.mixed, !is.nan(p.value),
+             abs(beta.coef) < beta.coef.max) %>% arrange(-abs(beta.coef)) %>% ungroup()
   }else{
     result$Reg.Corr.Mixed <- data %>% do(reg.corr.mixed(data=., acf = acf)) %>%
-      filter(!is.nan(p.value)) %>% arrange(p.value) %>% ungroup()}
+      filter(!is.nan(p.value),
+             abs(beta.coef) < beta.coef.max) %>% arrange(p.value) %>% ungroup()}
 
 }
 return(result)

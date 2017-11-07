@@ -21,7 +21,7 @@ reg.corr.mixed <- function(data, acf){
 
     mod.temp <- glmmPQL(cbind(meth, unmeth) ~ prob , random = ~1|factor(poz),
                         data = data, family = binomial, correlation = cs, verbose = FALSE)
-    p.value <- summary(mod.temp)$tTable[2,1]
+    p.value <- summary(mod.temp)$tTable[2,5]
     beta.coef <- summary(mod.temp)$tTable[2,1]
     return(data.frame(p.value = p.value, beta.coef = beta.coef))
   }, error = function(cond){
