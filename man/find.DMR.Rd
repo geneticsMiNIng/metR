@@ -5,7 +5,7 @@
 \title{Finding DMR}
 \usage{
 find.DMR(data, methods, p.value.log.reg = NULL, p.value.reg.mixed = NULL,
-  p.value.reg.corr.mixed = NULL)
+  p.value.reg.corr.mixed = NULL, beta.coef.max = 30)
 }
 \arguments{
 \item{data}{There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
@@ -30,6 +30,9 @@ of prob variable otherwise regions ale increasingly ordered by p.value}
 
 \item{p.value.reg.corr.mixed}{if not NULL regions with p.value of prob variable smaller than p.value.log.reg are returned and  decreasingly ordered by absolute value of beta coefficient
 of prob variable otherwise regions ale increasingly ordered by p.value}
+
+\item{beta.coef.max}{only results which have absolute value of beta.coef less than this parameter are returned from Log.Reg, Reg.Mixed, Reg.Corr.Mixed. This prevent cases when algorithm
+did not convergence well}
 }
 \value{
 list object. Elements of list are results of given methods. The most interesting regions are on the top

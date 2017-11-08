@@ -4,10 +4,11 @@
 \alias{draw.methylation}
 \title{Plot DMR region}
 \usage{
-draw.methylation(data, chromosom, start, end, plot.title = 26,
-  axis.title.x = 23, axis.title.y = 23, legend.position = "right",
-  axis.text.x = 20, axis.text.y = 20, legend.text = 16,
-  legend.title = 18)
+draw.methylation(data, chromosom, start, end, bind.probes = T,
+  smooth.methylation = T, size.x.dot = 15, size.y.dot = 9,
+  plot.title = 26, axis.title.x = 23, axis.title.y = 23,
+  legend.position = "right", axis.text.x = 20, axis.text.y = 20,
+  legend.text = 16, legend.title = 18)
 }
 \arguments{
 \item{data}{There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
@@ -18,6 +19,10 @@ create.tiles.fixed.length.}
 \item{start}{minimum position of region that are being plotted}
 
 \item{end}{maximum position of region that are being plotted}
+
+\item{bind.probes}{if TRUE methylation rates on the same position will be binded by vertical lines}
+
+\item{smooth.methylation}{if TRUE methylation rates in two probes will be smoothed}
 
 \item{chr}{chromosom name of region that are being plotted}
 }
@@ -33,7 +38,11 @@ load('sample.2.rda')
 data <- preprocessing(sample.1, sample.2)
 draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000)
 
+#without binding lines and smoothing
+draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000,
+bind.probes = F, smooth.methylation = F)
+
 # with changing some ggplot2 arguments:
 draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000, legend.title = 20,
-legend.position = 'bottom', plot.title = 28)
+legend.position = 'bottom', plot.title = 28, size.x.dot = 10, size.y.dot = 4)
 }
