@@ -50,7 +50,7 @@ preprocessing <- function(sample.1, sample.2){
 
     sample.1 %>% inner_join(sample.2, by = c("chr"="chr", "poz"="poz")) %>%
       gather(key, value, -chr, -poz) %>%
-      extract(key, c('type', "prob"), "(.*)\\.(.)") %>%
+      tidyr::extract(key, c('type', "prob"), "(.*)\\.(.)") %>%
       spread(type, value) %>% dplyr::select(chr, poz, prob, no, meth, unmeth, meth.rate) %>%
       mutate(no = as.integer(no), meth = as.integer(meth), unmeth = as.integer(unmeth)) -> data
 
