@@ -1,10 +1,12 @@
 Package: metR
 Type: Package
-Title: Package for finding DMR 
+Title: Tools for Identification of Differentially Methylated Regions
 Version: 0.1.0
-Author: Aleksandra Brodecka, Przemysław Biecek
-Maintainer: Aleksandra Brodecka  <aleksandrabrodecka@gmail.com> 
-Description: Package for finding differentially methylated regions and visualizations
+Authors@R: c(
+    person("Aleksandra", "Brodecka", email = "aleksandrabrodecka@gmail.com", role = c("aut", "cre")),
+    person("Przemyslaw", "Biecek", email = "przemyslaw.biecek@gmail.com", role = c("aut","ths"))
+    )
+Description: Set of statistical test for identification of Differentially Methylated Regions.  Visualisation of differnces in identified regions. And validation of sensitivity of these tools.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
@@ -12,4 +14,5 @@ Imports:
  ggplot2, dplyr, data.table, lme4, nlme, magrittr, tidyr, MASS
 Depends:
  ggplot2, dplyr, data.table, lme4, nlme, magrittr, tidyr, MASS 
+URL: https://github.com/geneticsMiNIng/metR
 RoxygenNote: 6.0.1
