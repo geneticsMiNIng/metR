@@ -53,5 +53,5 @@ find.DMR(data.tiles, c('Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed', 'Reg.C
 find.DMR(data.tiles, c('Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'), p.value.log.reg = 0.01, p.value.reg.mixed = 0.02, p.value.reg.corr.mixed=0.03)
 
 #finding DMR only by 'Reg.Log' with sorting on beta values and 'Wilcoxon' with sorting on p.values
-find.DMR(data.tiles, c('Wilcoxon', 'Reg.Log'), p.value.log.reg = 0.001
+find.DMR(data.tiles, c('Wilcoxon', 'Reg.Log'), p.value.log.reg = 0.001)
 }

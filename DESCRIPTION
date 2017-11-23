@@ -8,8 +8,11 @@ Description: Package for finding differentially methylated regions and visualiza
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-Imports: 
- ggplot2, dplyr, data.table, lme4, nlme, magrittr, tidyr, MASS
+Imports:
+ ggplot2, dplyr, data.table(>= 1.10.4.3), lme4, nlme, magrittr, tidyr, MASS
 Depends:
- ggplot2, dplyr, data.table, lme4, nlme, magrittr, tidyr, MASS 
+ ggplot2, dplyr, data.table(>= 1.10.4.3), lme4, nlme, magrittr, tidyr, MASS 
 RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

@@ -22,8 +22,8 @@ tiles.common if argument tiles.common is not null
 The same regions are observation that maximum difference position is gaps.length argument
 }
 \examples{
-load('sample.1')
-load('sample.2')
+data('sample.1')
+data('sample.2')
 data <- preprocessing(sample.1, sample.2)
 create.tiles.fixed.length(data, tiles.length = 1000, common = NULL)
 create.tiles.fixed.length(data, tiles.length = 1000, common = TRUE)

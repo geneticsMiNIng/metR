@@ -33,8 +33,8 @@ ggplot object with visualization of regions
 Visualizing DMR region by plotting methylation rate within two probes
 }
 \examples{
-load('sample.1.rda')
-load('sample.2.rda')
+data('sample.1.rda')
+data('sample.2.rda')
 data <- preprocessing(sample.1, sample.2)
 draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000)
 

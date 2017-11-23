@@ -1,6 +1,5 @@
 create.tiles.chr <- function(data.chr, gaps.length){
 
-
   data.chr %>% distinct(poz) %>% arrange(poz) %>%
     mutate(diff = poz - lag(poz), id = seq_along(poz))  -> poz
 
