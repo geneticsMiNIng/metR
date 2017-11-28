@@ -10,16 +10,10 @@ Description: Set of statistical test for identification of Differentially Methyl
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-Imports:
- ggplot2, dplyr, data.table(>= 1.10.4.3), lme4, nlme, magrittr, tidyr, MASS
 Depends:
-<<<<<<< HEAD
  ggplot2, dplyr, data.table(>= 1.10.4.3), lme4, nlme, magrittr, tidyr, MASS 
-=======
- ggplot2, dplyr, data.table, lme4, nlme, magrittr, tidyr, MASS 
 URL: https://github.com/geneticsMiNIng/metR
->>>>>>> 03a1e25dcd9d212175ca45e1030f969265b02baf
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
