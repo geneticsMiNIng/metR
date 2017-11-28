@@ -60,6 +60,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/metR_vignette.html">Introduction to metR</a>
+    </li>
+  </ul>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -140,22 +152,15 @@ did not convergence well</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>data('sample.1')
-data('sample.2')
-data <- preprocessing(sample.1, sample.2)
-data.tiles <- create.tiles.max.gap(data, gaps.lenth = 100)
- #finding DMR by all methods with sorting on p.values
-find.DMR(data.tiles, c('Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'))
-
-#finding DMR by 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'  with sorting on beta values
-find.DMR(data.tiles, c('Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'), p.value.log.reg = 0.01, p.value.reg.mixed = 0.02, p.value.reg.corr.mixed=0.03)
-
-#finding DMR only by 'Reg.Log' with sorting on beta values and 'Wilcoxon' with sorting on p.values
-find.DMR(data.tiles, c('Wilcoxon', 'Reg.Log'), p.value.log.reg = 0.001
-</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:14:0: unexpected end of input</span>
-#&gt; <span class='error'>12: find.DMR(data.tiles, c('Wilcoxon', 'Reg.Log'), p.value.log.reg = 0.001</span>
-#&gt; <span class='error'>13: </span>
-#&gt; <span class='error'>   ^</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='st'>'sample.1'</span>)
+<span class='fu'>data</span>(<span class='st'>'sample.2'</span>)
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='preprocessing.html'>preprocessing</a></span>(<span class='no'>sample.1</span>, <span class='no'>sample.2</span>)
+<span class='no'>data.tiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create.tiles.max.gap.html'>create.tiles.max.gap</a></span>(<span class='no'>data</span>, <span class='kw'>gaps.lenth</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='error'>Error in create.tiles.max.gap(data, gaps.lenth = 100): unused argument (gaps.lenth = 100)</span></div><div class='input'> <span class='co'>#finding DMR by all methods with sorting on p.values</span>
+<span class='fu'>find.DMR</span>(<span class='no'>data.tiles</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Ttest'</span>, <span class='st'>'KS'</span>, <span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>))</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'data.tiles' not found</span></div><div class='input'>
+<span class='co'>#finding DMR by 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'  with sorting on beta values</span>
+<span class='fu'>find.DMR</span>(<span class='no'>data.tiles</span>, <span class='fu'>c</span>(<span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>p.value.reg.mixed</span> <span class='kw'>=</span> <span class='fl'>0.02</span>, <span class='kw'>p.value.reg.corr.mixed</span><span class='kw'>=</span><span class='fl'>0.03</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'data.tiles' not found</span></div><div class='input'>
+<span class='co'>#finding DMR only by 'Reg.Log' with sorting on beta values and 'Wilcoxon' with sorting on p.values</span>
+<span class='fu'>find.DMR</span>(<span class='no'>data.tiles</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Reg.Log'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'data.tiles' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
