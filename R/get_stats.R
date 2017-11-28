@@ -4,13 +4,13 @@
 #' @param data dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 #' create.tiles.fixed.length
 #' @return data.frame which is summing-up regions specifed by tiles and tiles.common columns in data
-#' @export
-#' #' @examples
+#' @examples
 #' data('sample.1')
 #' data('sample.2')
 #' data <- preprocessing(sample.1, sample.2)
 #' data.tiles <- create.tiles.max.gap(data, gaps.lenth = 100)
 #' get.stats(data.tiles)
+#' @export
 
 get.stats <- function(data){
 
@@ -85,7 +85,5 @@ get.stats <- function(data){
   data$quantile <- mapply(get.quantile, x = data$meth.diff, n = data$meth.cov)
   data
   }
-
-
 
 

@@ -18,10 +18,10 @@ from control and disease samples. The variables are as follows:
 \itemize{
   \item chr. name of chromosome where methylation data was collected (only chromosome 1.)
   \item poz. position of chromosome where methylation data was collected
-  \item no. number of sequences
-  \item meth. number of sequences where cytosine was methylated
-  \item unmeth. number of sequences where cytosine was unmethylated
-  \item meth.rate. methylation.rate that is ratio of meth and no variables
+  \item no. number of reads per position
+  \item meth. number of reads with methylated cytosine
+  \item unmeth. number of reads with unmethylated cytosine
+  \item meth.rate. methylation.rate that is ratio meth./(meth. + unmeth.)
 }
 }
 \keyword{datasets}

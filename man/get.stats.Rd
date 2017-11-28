@@ -16,3 +16,10 @@ data.frame which is summing-up regions specifed by tiles and tiles.common column
 \description{
 Summarize regions by minimum, maximmum, mean, standard deviation of methylation rate in two probes and methylation diff rate withib two probes and estimated quantile basen od methylation diff rate
 }
+\examples{
+data('sample.1')
+data('sample.2')
+data <- preprocessing(sample.1, sample.2)
+data.tiles <- create.tiles.max.gap(data, gaps.lenth = 100)
+get.stats(data.tiles)
+}
