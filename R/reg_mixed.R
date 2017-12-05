@@ -9,18 +9,23 @@
 #' @return vecotor with p.value and beta coef. from grouping variable from logistic regression with random effects or two-elemented vector of na values if something goes wrong
 #' @export
 #' @examples
-#' data('sample.1')
-#' data('sample.2')
-#' data <- preprocessing(sample.1, sample.2)
-#' data.tiles <- create.tiles.max.gap(data, gaps.lenth = 100)
-#' data.test <- data.tiles %>% filter(tiles == 1)
-#' reg.mixed(data.test)
+#' data('schizophrenia')
+#' control <- schizophrenia %>% filter(category == 'control') %>%
+#' dplyr::select(-category)
+#'
+#' disease <- schizophrenia %>% filter(category == 'disease') %>%
+#'  dplyr::select(-category)
+#'
+#' data <- preprocessing(control, disease)
+#' data.tiles <- create_tiles_max_gap(data, gaps.length = 100)
+#' data.test <- data.tiles %>% filter(tiles == 10)
+#' reg_mixed(data.test)
 #' # or by some self-defined regions:
-#' data.test.2 <- data.tiles %>% filter(chr == 'chr2', start > 171573000, poz < 171574000)
-#' reg.mixed(data.test.2)
+#' data.test.2 <- data.tiles %>% filter(chr == 'chr1', poz > 80000, poz < 10000)
+#' reg_mixed(data.test.2)
 
 
-reg.mixed <- function(data){
+reg_mixed <- function(data){
   tryCatch({
     mod.temp <- glmer(cbind(meth, unmeth) ~ prob + (1|poz),
                       data = data, family = binomial)

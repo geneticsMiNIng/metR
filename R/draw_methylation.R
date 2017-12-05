@@ -13,105 +13,44 @@
 #' @return ggplot object with visualization of regions
 #' @export
 #' @examples
-#' data('sample.1.rda')
-#' data('sample.2.rda')
-#' data <- preprocessing(sample.1, sample.2)
-#' draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000)
+#' data('schizophrenia')
+#' control <- schizophrenia %>% filter(category == 'control') %>%
+#' dplyr::select(-category)
+#'
+#' disease <- schizophrenia %>% filter(category == 'disease') %>%
+#'  dplyr::select(-category)
+#'
+#' data <- preprocessing(control, disease)
+#' draw_methylation(data, chr = 'chr1', start = 80000, end = 100000)
 #'
 #' #without binding lines and smoothing
-#' draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000,
+#' draw_methylation(data, chr = 'chr1', start = 80000, end = 100000,
 #' bind.probes = F, smooth.methylation = F)
 #'
 #' # with changing some ggplot2 arguments:
-#' draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000, legend.title = 20,
+#' draw_methylation(data, chr = 'chr1', start = 80000, end = 100000, legend.title = 20,
 #' legend.position = 'bottom', plot.title = 28, size.x.dot = 10, size.y.dot = 4)
 
 
-draw.methylation <- function(data, chromosom, start, end, bind.probes = T,
+draw_methylation <- function(data, chromosom, start, end, bind.probes = T,
                              smooth.methylation = T,
                              size.x.dot = 15, size.y.dot = 9,
                              plot.title = 26, axis.title.x  = 23,
                              axis.title.y = 23, legend.position = 'right', axis.text.x = 20, axis.text.y = 20,
                              legend.text = 16, legend.title = 18){
 
+  check_data_without_tiles(data[,1:7])
+  check_args_draw_metylation(start, end, chromosom, bind.probes,
+                              smooth.methylation)
 
-  if(!zapsmall(start, 15) == round(start) | start <= 0)
-    stop("Error: Incorrect start argument")
+  DT <- main_prep_data_draw_metylation(data, chromosom, start, end)
+  main_draw_metylation(DT, chromosom, start, end, bind.probes,
+                                   smooth.methylation,
+                                   size.x.dot, size.y.dot,
+                                   plot.title, axis.title.x,
+                                   axis.title.y, legend.position, axis.text.x, axis.text.y,
+                                   legend.text, legend.title)
 
-  if(!zapsmall(end, 15) == round(end) | end <= 0)
-    stop("Error: Incorrect end argument")
-
-  if(!chromosom %in% paste0('chr', c(1:22, "X", "Y", "M")))
-    stop("Error: Incorrect chr argument")
-
-  data.colnames <- c('chr', 'poz', 'prob', 'no', 'meth', 'unmeth', 'meth.rate')
-
-  if ('tiles.common' %in% colnames(data)) data <- data[, -ncol(data)]
-  if ('tiles' %in% colnames(data)) data <- data[, -ncol(data)]
-
-  if(!all.equal(colnames(data), data.colnames))
-    stop("Error: Incorrect colnames in data")
-
-  data.types <- c("character","integer","character","integer","integer", "integer", 'double')
-  names(data.types) <- data.colnames
-
-  if(!all.equal(sapply(data, typeof), data.types))
-    stop("Error: Incorrect datatypes in data")
-
-  if (!all(data$poz > 0) | !all(data$chr %in% paste0('chr', c(1:22, "X", "Y", "M"))) |
-      !all(data$meth + data$unmeth == data$no) | !all(round(data$meth /data$no,3) == round(data$meth.rate,3)))
-    stop("Error: Incorrect values in data")
-
-  if(!is.logical(bind.probes))
-    stop("Error: Incorrect bind.probes argument")
-
-  if(!is.logical(smooth.methylation))
-    stop("Error: Incorrect smooth.methylation argument")
-
-  DT <- data %>% filter(chr == chromosom, poz >=start, poz <= end)
-
-  DT1 <- DT %>% mutate(cov = round(log(no),1)) %>%  dplyr::select(poz, chr, prob, cov) %>% spread(prob, cov) %>%
-    rename(cov_I = x, cov_II = y)
-
-  DT  %>% dplyr::select(poz, chr, meth.rate, prob) %>% spread(prob, meth.rate) %>%
-    rename(met_I = x, met_II = y) %>% left_join(DT1, by = c("poz", "chr")) -> DT
-
-  p <- ggplot(DT) + ylim(0,1) +
-    scale_x_continuous(breaks = c(start, end),labels = c(start, end), limits = c(start, end)) +
-    geom_point(DT,map=aes(x=poz, y=met_I, colour=cov_I), size = size.x.dot , shape = 20) +
-    scale_color_gradient(low="pink1", high="red", name = "log(covX)") +
-    geom_point(DT,map=aes(x=poz, y=met_II, fill=cov_II), size = size.y.dot, shape = 21) +
-    scale_fill_gradient(low="cadetblue1", high="royalblue4", name = "log(covY)")
-
-  x = as.matrix(DT[,1])
-  y1 = as.matrix(DT[,'met_I'])
-  y2 = as.matrix(DT[,'met_II'])
-
-
- p <- p + ggtitle(paste0("Methylation rate in ", chromosom)) +
-    xlab("DNA position") + ylab("Methylation rate") + theme_minimal() +
-    theme(
-      plot.title = element_text(size=plot.title),
-      axis.title.x = element_text(size=axis.title.x),
-      axis.title.y = element_text(size=axis.title.y),
-      legend.position=legend.position,
-      axis.text.x = element_text(size=axis.text.x),
-      axis.text.y = element_text(size=axis.text.y),
-      legend.text = element_text(size = legend.text),
-      legend.title = element_text(size = legend.title),
-      plot.margin = unit(c(1,1,1,1), "cm"))
-
-
-  if (bind.probes){
-    p <- p + geom_segment(aes(x = x, y = y1, xend = x, yend = y2) )
-  }
-
-  if (smooth.methylation){
-    p <-  p + geom_smooth(aes(x = poz,y = met_I), colour = 'red', se = FALSE)  +
-      geom_smooth(aes(x = poz,y = met_II), colour = "royalblue2", se = FALSE)
-  }
-
-  p
 }
 
 

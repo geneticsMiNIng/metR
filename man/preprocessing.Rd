@@ -19,7 +19,12 @@ Preprocessing data for methylation analyses
 }
 \examples{
 # data from package
-data('sample.1')
-data('sample.2')
-preprocessing(sample.1, sample.2)
+data('schizophrenia')
+control <- schizophrenia \%>\% filter(category == 'control') \%>\%
+dplyr::select(-category)
+
+disease <- schizophrenia \%>\% filter(category == 'disease') \%>\%
+ dplyr::select(-category)
+
+data <- preprocessing(control, disease)
 }

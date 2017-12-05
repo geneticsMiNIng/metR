@@ -1,7 +1,7 @@
 
 data('quantile.function')
 
-get.quantile <- function(x, n){
+get_quantile <- function(x, n){
   if (n <= 150){
     quantile.function[[n]](x)
   } else

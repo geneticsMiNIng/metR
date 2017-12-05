@@ -9,21 +9,27 @@
 #' @return vecotor with p.value and beta coef. from grouping variable from logistic regression with random effects and given correlation matrix or two-elemented vector of na values if something goes wrong
 #' @export
 #' @examples
-#' data('sample.1')
-#' data('sample.2')
+#' data('schizophrenia')
+#' control <- schizophrenia %>% filter(category == 'control') %>%
+#' dplyr::select(-category)
+#'
+#' disease <- schizophrenia %>% filter(category == 'disease') %>%
+#'  dplyr::select(-category)
+#'
+#' data <- preprocessing(control, disease)
+#' data.tiles <- create_tiles_max_gap(data, gaps.length = 100)
+#'
 #' # we must also read acf vector which was previously estimated
 #' data('mean.acf.chr')
 #' acf <- mean.acf.chr[-1]
-#' data <- preprocessing(sample.1, sample.2)
-#' data.tiles <- create.tiles.max.gap(data, gaps.lenth = 100)
 #' data.test <- data.tiles %>% filter(tiles == 1)
-#' reg.corr.mixed(data.test, acf)
+#' reg_corr_mixed(data.test, acf)
 #' # or by some self-defined regions:
-#' data.test.2 <- data.tiles %>% filter(chr == 'chr2', start > 171573000, poz < 171574000)
-#' reg.corr.mixed(data.test.2, acf)
+#' data.test.2 <- data.tiles %>% filter(chr == 'chr1', poz > 80000, poz < 82000)
+#' reg_corr_mixed(data.test.2, acf)
 
 
-reg.corr.mixed <- function(data, acf){
+reg_corr_mixed <- function(data, acf){
 
   data %<>% arrange(prob, poz)
 

@@ -9,18 +9,23 @@
 #' @return p.value from Wilcoxon test or na values if something goes wrong
 #' @export
 #' @examples
-#' data('sample.1')
-#' data('sample.2')
-#' data <- preprocessing(sample.1, sample.2)
-#' data.tiles <- create.tiles.max.gap(data, gaps.lenth = 100)
-#' data.test <- data.tiles %>% filter(tiles == 1)
-#' test.wilcoxon(data.test)
+#' data('schizophrenia')
+#' control <- schizophrenia %>% filter(category == 'control') %>%
+#' dplyr::select(-category)
+#'
+#' disease <- schizophrenia %>% filter(category == 'disease') %>%
+#'  dplyr::select(-category)
+#'
+#' data <- preprocessing(control, disease)
+#' data.tiles <- create_tiles_max_gap(data, gaps.length = 100)
+#' data.test <- data.tiles %>% filter(tiles == 10)
+#' test_wilcoxon(data.test)
 #' # or by some self-defined regions:
-#' data.test.2 <- data.tiles %>% filter(chr == 'chr2', start > 171573000, poz < 171574000)
-#' test.wilcoxon(data.test.2)
+#' data.test.2 <- data.tiles %>% filter(chr == 'chr1', poz > 80000, poz < 100000)
+#' test_wilcoxon(data.test.2)
 
 
-test.wilcoxon <- function(data){
+test_wilcoxon <- function(data){
   data %<>% arrange(prob, poz)
   n = nrow(data)/2
   tryCatch({p.value = wilcox.test(x = data$meth.rate[1:n],y =  data$meth.rate[(n+1):(2*n)],

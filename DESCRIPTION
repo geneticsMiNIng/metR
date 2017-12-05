@@ -12,6 +12,8 @@ Encoding: UTF-8
 LazyData: true
 Depends:
  ggplot2, dplyr, data.table(>= 1.10.4.3), lme4, nlme, magrittr, tidyr, MASS 
+Imports:
+ data.table(>= 1.10.4.3)
 URL: https://github.com/geneticsMiNIng/metR
 RoxygenNote: 6.0.1.9000
 Suggests: knitr,

@@ -2,7 +2,12 @@
 title: "Introduction to metR"
 author: "Aleksandra Brodecka, Przemysław Biecek"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+    theme: simplex
+    toc: true
+    toc_depth: 3
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{metR_vignette}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,336 +16,181 @@ vignette: >
 
 # Introduction
 
-metR package allows comprehensive data analysis from methylation studies. By metR we can find create regions, get basic statistics about them, plot methylation rate or arrange created regions from the most interesing by diffrent methods. 
+`metR` package allows comprehensive data analysis from methylation studies. By `metR` we can create regions, get basic statistics about them, plot methylation rate or arrange created regions from the most interesing by diffrent methods. 
 
-We will use the following packages:
+
+```{r, eval = F}
+devtools::install_github("geneticsMiNIng/metR")
+library(metR)
+
+# useful for printing tables
+library(kableExtra)
+library(knitr)
+```
+
+Initially we check if `metR` package includes all neccesary datasets and functions:
 
 ```{r, include=FALSE}
 library(metR)
-library(gridExtra)
-library(grid)
-```
-
-
-# Small probes - examples from description
-
-sample.1 and sample.2 are datasets containing a part of the methylation data from some patient's healthy and diseased tissue. See ?sample.1 or ?sample.2 if you want more details about columns.
-
-```{r}
-data("sample.1")
-data("sample.2")
-```
-
-### Preprocessing
-
-We use preprocessing function to binding these probes on chromosome and position:
-
-```{r}
-data <- preprocessing(sample.1, sample.2)
-DT::datatable(head(data, 10))
-```
-
-### Creating regions
-
-Now we can create region. After creation they will be tested if there is significant difference between two probes in methylation rate.
-
-One way is to use create.tiles.fixed.length function, See ?create.tiles.fixed.length if you want some details.
-
-```{r}
-data.tiles.0 <- create.tiles.fixed.length(data, tiles.length = 1000, common = T)
-DT::datatable(head(data.tiles.0))
+library(kableExtra)
+library(knitr)
 ```
 
 ```{r}
-data.tiles.1 <- create.tiles.fixed.length(data, tiles.length = 1000, common = F)
-DT::datatable(head(data.tiles.1))
+check_before_using()
 ```
 
-We can also create region by create.tiles.max.gap function:
-
-```{r}
-data.tiles.2 <- create.tiles.max.gap(data, gaps.length = 100)
-DT::datatable(head(data.tiles.2))
-```
-
-### Basic statistics
-
-We run get.stats function to get basic statisitcs about created regions:
-
-```{r}
-stats.0 <- get.stats(data.tiles.0)
-stats.1 <- get.stats(data.tiles.1)
-stats.2 <- get.stats(data.tiles.2)
-DT::datatable(head(stats.2))
-```
-
-Which function gives us greater regions?
-
-```{r}
-c(median(stats.0$meth.cov),median(stats.1$meth.cov),median(stats.2$meth.cov))
-```
-
-Or greater methylation difference?
-
-```{r}
-c(median(stats.0$meth.diff), median(stats.1$meth.diff) , median(stats.2$meth.diff))
-```
-
-We propose tuning parameters: gaps.length, common and tiles.length depending on how long and how many regions we want to obtain.
-
-### Finding DMR
-
-We can sort regions by 6 methods:
-Wilcoxon, t-Student, Kolmogorov-Smirnow tests or using logistic regression and its modifications. See ?find.DMR if you want some more details.
-
-```{r, include=FALSE}
-result <- find.DMR(data.tiles.2, methods = c('Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'))
-```
-
-```{r, eval = F}
-result <- find.DMR(data.tiles.2, methods = c('Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'))
-```
-
-We get list of six data frames with columns: chr - chromosome, start and end which are min and max position of region and p.value which is p.value from tested method. Logistic regression methods return also data frame with beta.coeff columns which is beta coefficient og grouping variable. 
-In each data frame regions are sorted by most interesing to uninteresing groups. 
-
-```{r}
-names(result)
-DT::datatable(head(result$Wilcoxon))
-```
-
-We can change ordering logistic regressions from p.value of grouping variable to absolute value of beta coefficient. We must establish parameters: p.value.log.reg, p.value.reg.mixed or p.value.reg.corr.mixed. Function find.DMR returns only regions which have smaller p.values than p.value from  adequate methods.
-
-```{r include = F}
-result.2 <-find.DMR(data.tiles.2, c('Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'), p.value.log.reg = 0.01, p.value.reg.mixed = 0.02, p.value.reg.corr.mixed=0.03)
-```
-
-```{r, eval = F}
-result.2 <-find.DMR(data.tiles.2, c('Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'), p.value.log.reg = 0.01, p.value.reg.mixed = 0.02, p.value.reg.corr.mixed=0.03)
-```
-
-```{r}
-DT::datatable(head(result.2$Reg.Log))
-```
-
-### Plotting methylation 
-
-We use draw.methylation function:
-we have to give parameters like: data - data.frame from preprocessing function, chr - chromosome name, start and end which are min and max position of plotted region.
-Other parameters allow us change graphics parameters from ggplot object. 
-
-```{r fig.width=7.5, fig.height=3.5, message=F, warning = F}
-draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000, legend.title = 12, legend.position = 'bottom', plot.title = 17, axis.title.x = 12, axis.title.y = 12,
-                 axis.text.x = 11, axis.text.y = 11, 
-                 size.x.dot = 7, size.y.dot = 4, legend.text = 8)
-
-draw.methylation(data, chr = 'chr2', start = 171573000, end = 171574000, legend.title = 12, legend.position = 'bottom', plot.title = 17, axis.title.x = 12, axis.title.y = 12,
-                 axis.text.x = 11, axis.text.y = 11, 
-                 size.x.dot = 7, size.y.dot = 4, bind.probes = F, smooth.methylation = F, legend.text = 8)
-
-```
+Ok, so let's start!
 
 # Comprehensive analysis:
 
 Data for this example are downloaded from site: http://www.neuroepigenomics.org/methylomedb/download.html We used 4 control samples: Control1 AC, Control2 AC, Control3 AC and Control4 AC and 4 disease samples: SCZ1 AC, SCZ2 AC, SCZ3 AC, SCZ4 AC. After downloading we summed all results on the same position and chromosome separately from control and disease samples.
 
-In this file we created analysis of DMR in chromosome 1. The code about preprocessing files can be found in examples/prep.MethylomeDB.R in this repo. Result of this script are two data.frames 
-'control' and 'disease' that are included in metR package. 
+In this file we created analysis of DMR in chromosome 1. The code about preprocessing files can be found in https://github.com/geneticsMiNIng/metR/blob/master/examples/prep.MethylomeDB.R. Result of this script is one data.frame `schizophrenia` that is included in metR package. Column category indicates if data are from control samples ('control' value) or from disease samples ('disease' value).
 
+## Examples of differentially methylated regions
 
-```{r}
-data("control")
-DT::datatable(head(control))
+We show 8 regions that are results of running metR package on schizophrenia data.
 
-data("disease")
-DT::datatable(head(disease))
-```
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+data('schizophrenia')
+control <- schizophrenia %>% filter(category == 'control') %>%
+  dplyr::select(-category)
 
-### Preprocess data:
+disease <- schizophrenia %>% filter(category == 'disease') %>%
+  dplyr::select(-category)
 
-```{r}
 data <- preprocessing(control, disease)
 
-DT::datatable(head(data))
-```
-
-Check correlation:
-
-```{r}
-data %>% filter(prob == 'x') %>% mutate(a = log((meth + 1)/(unmeth + 1))) %>% pull(a) -> a 
-data %>% filter(prob == 'y') %>% mutate(b = log((meth + 1)/(unmeth + 1))) %>% pull(b) -> b 
-cor(a,b)
-```
-
-So we see that these probes are highly correlated.
-
-### Creating regions
-
-After preprocessing we can create region. After creation they will be tested if there is significant difference between two probes in methylation rate.
-
-```{r}
-data.tiles.1 <- create.tiles.fixed.length(data, tiles.length = 1000, common = F)
-DT::datatable(head(data.tiles.1))
-
-data.tiles.2 <- create.tiles.fixed.length(data, tiles.length = 1000, common = T)
-DT::datatable(head(data.tiles.2))
-```
-
-```{r}
-data.tiles.3 <- create.tiles.max.gap(data, gaps.length = 100)
-DT::datatable(head(data.tiles.3))
-
-```
-
-
-Now we can compare how perform our functions.
-We got basic statistics about two probes. This is helpful if we want check coverage of created regions or methylation difference.
-
-```{r fig.width=6, fig.height=3, message=F, warning = F}
-stats.1 <- get.stats(data.tiles.1)
-stats.2 <- get.stats(data.tiles.2)
-stats.3 <- get.stats(data.tiles.3)
-DT::datatable(head(stats.3))
-
-stats.all <- gdata::combine(stats.1, stats.2, stats.3)
-
-ggplot(stats.all, aes(x = meth.diff, group = source, col = source)) + geom_density() + theme_minimal() +
-  ggtitle('Distribution of methylation difference') +
-    theme(
-      plot.title = element_text(size=15),
-      axis.title.x = element_text(size=13),
-      axis.title.y = element_text(size=13),
-      axis.text.x = element_text(size=11),
-      axis.text.y = element_text(size=11),
-      legend.text = element_text(size = 11),
-      legend.title = element_text(size = 13))
-
-ggplot(stats.all, aes(x = meth.cov, group = source, col = source)) + geom_density() + theme_minimal() + xlim(0,100) +
-  ggtitle('Distribution of coverage regions') +
-    theme(
-      plot.title = element_text(size=15),
-      axis.title.x = element_text(size=13),
-      axis.title.y = element_text(size=13),
-      axis.text.x = element_text(size=11),
-      axis.text.y = element_text(size=11),
-      legend.text = element_text(size = 11),
-      legend.title = element_text(size = 13))
-
-```
-
-We also can join e.g stats.3 and data.tiles.3 on chromosome, start and end column and analyzing regions only if they coverage is greater than some specyfic values or other condition.
-
-### Finding DMR
-
-```{r, eval = F}
-# eval = F
-result <- find.DMR(data.tiles.3, methods = c('Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'))
-```
-
-Results of running function above are included in package. So now we only load data:
-
-```{r}
+data.tiles.3 <- create_tiles_max_gap(data, gaps.length = 100)
+stats.3 <- get_stats(data.tiles.3)
 data('find.DMR.results')
-names(find.DMR.results)
-DT::datatable(head(find.DMR.results$Wilcoxon, 10))
-```
+find.DMR.results$Reg.Log.Beta <- find.DMR.results$Reg.Log %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+find.DMR.results$Reg.Mixed.Beta <- find.DMR.results$Reg.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+find.DMR.results$Reg.Corr.Mixed.Beta <- find.DMR.results$Reg.Corr.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
 
-### Plotting methylation
-
-Based on draw.methylation function we plotted ten best result from find.DMR.
-
-
-```{r}
-top.n <- function(find.DMR.results, data, title){
-  p <- list()
-  for (i in 1:10){
-  p[[i]] <- draw.methylation(data, chromosom = 'chr1', start = pull(find.DMR.results[i, 'start']), end = pull(find.DMR.results[i, 'end']), bind.probes = F,
-        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
-        axis.text.x = 9, axis.text.y = 9)
-  }
-  
-  grid.arrange(arrangeGrob(p[[1]], p[[2]], ncol = 2),
-  arrangeGrob(p[[3]], p[[4]], ncol = 2), 
-  arrangeGrob(p[[5]], p[[6]], ncol = 2), 
-  arrangeGrob(p[[7]], p[[8]], ncol = 2),
-  arrangeGrob(p[[9]], p[[10]], ncol = 2),
-             nrow = 5, top=textGrob(title, gp=gpar(fontsize=14,font=8)))              
+get_top <- function(data, n, stats){
+  data %>% slice(1:n) %>%
+    left_join(stats, by = c('chr', 'start', 'end')) %>%
+    dplyr::select(chr, start, end, meth.cov, meth.max_x, meth.max_y  
+                  ,meth.mean_x, meth.mean_y, meth.min_x,
+                  meth.min_y, meth.sd_x, meth.sd_y, meth.diff,quantile)
 }
 
-```
-
-```{r fig.width=7.5, fig.height=12, message=F, warning = F}
-top.n(find.DMR.results$Wilcoxon, data, 'Top results by Wilcoxon test')
-
-top.n(find.DMR.results$Ttest, data, 'Top results by t-test')
-
-top.n(find.DMR.results$KS, data, 'Top results by K-S test')
-
-top.n(find.DMR.results$Reg.Log, data, 'Top results by logistic regression')
-```
-
-We can also sorting regions from logistic regression by effect.size:
-
-```{r}
-find.DMR.results$Reg.Log.Beta <- find.DMR.results$Reg.Log %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
-```
-
-The outcome above is equivalent if we run:
-
-```{r eval = F}
-find.DMR.results <- find.DMR(data.tiles.3, methods = c('Reg.Log'), p.value.log.reg = 0.001)
-
-```
-
-
-```{r fig.width=7.5, fig.height=12, message=F, warning = F}
-top.n(find.DMR.results$Reg.Log.Beta, data, 'Top results by logistic regression')
-```
-
-```{r fig.width=7.5, fig.height=12, message=F, warning = F}
-top.n(find.DMR.results$Reg.Mixed, data, 'Top results by log.reg with random effects')
-```
-
-```{r}
-find.DMR.results$Reg.Mixed.Beta <- find.DMR.results$Reg.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
-DT::datatable(head(find.DMR.results$Reg.Mixed.Beta))
-```
-
-The outcome above is equivalent if we run:
-
-```{r eval = F}
-find.DMR.results <- find.DMR(data.tiles.3, methods = c('Reg.Corr.Mixed'), p.value.log.reg = 0.001)
-```
-
-```{r fig.width=7.5, fig.height=12, message=F, warning = F}
-top.n(find.DMR.results$Reg.Mixed.Beta, data, 'Top results by log.reg with random effects sorting on beta')
-```
-
-```{r fig.width=7.5, fig.height=12, message=F, warning = F}
-top.n(find.DMR.results$Reg.Corr.Mixed, data, 'Top results by log.reg with random effects with given corr. matrix')
-
-find.DMR.results$Reg.Corr.Mixed.Beta <- find.DMR.results$Reg.Corr.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
-DT::datatable(head(find.DMR.results$Reg.Corr.Mixed.Beta))
-```
-
-The outcome above is equivalent if we run:
-
-```{r eval = F}
-find.DMR.results <- find.DMR(data.tiles.3, methods = c('Reg.Corr.Mixed'), p.value.log.reg = 0.001)
-```
-
-```{r fig.width=7.5, fig.height=12, message=F, warning = F}
-top.n(find.DMR.results$Reg.Corr.Mixed.Beta, data, 'Top results by log.reg with random effects with given corr. matrix sorting on beta')
-```
-
-```{r fig.width=7.5, fig.height=3.5}
-get_top <- function(data, n, stats){
-  data %>% slice(1:n) %>% 
-    left_join(stats, by = c('chr', 'start', 'end')) %>%
-    dplyr::select(quantile, meth.diff, meth.cov)
-  }
 
 top <- do.call(gdata::combine,lapply(find.DMR.results, get_top, n = 100, stats = stats.3))
+```
+
+### 1. Region with maximum coverage
+
+This region has the largest coverage from interesting areas. We have 394 observations. This region hasn't huge methylation diff in two samples but this difference is stable along the entire length.
+
+```{r echo = F}
+draw_show_table <- function(i,top,data){
+row <- top[i,]
+rownames(row) <- NULL
+row[5:14] <- round(row[5:14], 2)
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = F,
+        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
+        axis.text.x = 9, axis.text.y = 9)
+
+kable_styling(kable(row, "html"), position = "left",
+font_size = 9) %>% row_spec(1, color = "black") 
+}
+```
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+draw_show_table(which.max(top$meth.cov),top,data)
+```
+
+### 2. Region with maximum mean of methylation rate in control sample
+
+This region has the largest mean of methylation rate in control sample from interesting areas. We have 104  observations and mean of methylation rate is equal 1. This means that all of 104 observations have methylation rate on the level 1!
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+draw_show_table(which.max(top$meth.mean_x),top,data)
+```
+
+### 3. Region with minimum mean of methylation rate in disease sample
+
+This region has the smallest mean of methylation rate in disease sample from interesting areas. We have 210 observations and mean of methylation rate is equal 0. This means that all of 210 observations have methylation rate on the level 0!
+
+This is reverse example to the previous one.
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+draw_show_table(which.min(top$meth.mean_y),top,data)
+```
+
+### 4. Region with maximum standard deviation of methylation rate in control sample
+
+We see very interesing regions below. 
+In this example methylation rate start from 0 in both sample and increase to 1 in control sample and 0.75 in disease sample.
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+draw_show_table(which.max(top$meth.sd_x),top,data)
+```
+
+### 5. Region with maximum methylation difference in two probes
+
+This area has only two observations but methylation difference between them is huge and equal 0.7.
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+draw_show_table(which.max(top$meth.diff),top,data)
+```
+
+### 6. Region with maximum rank function
+
+This area has maximum rank function. Rank function is based on quantile regression which uses information about number of observations in region. 
+In this example methylation difference between probes is the biggest with respect to number of observations.
+Methylation difference is close to methylation difference in previous example but has more observation (11 to 2). 
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+draw_show_table(which.max(top$quantile),top,data)
+```
+
+### 7. Region with maximum methylation range in control sample
+
+This region has the biggest methylation range in control sample from interesting areas. 
+We see that methylation rate in control sample starts from 1 and decreases to 0.
+In disease sample methylation rate starts from level 0.9 and deacreases to 0.15.
+Curious observations is occuurance that at the beginning of region we see bigger methylation in control sample and at the end of region reverse case.
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+draw_show_table(which.max(top$meth.max_x - top$meth.min_x),top,data)
+```
+
+### 8. Region with maximum methylation range in disease sample
+
+This region has the biggest methylation range in disease sample from interesting areas. 
+In the middle of region we can notice that methylation rate in disease sample is equal to 0 and in control is around 0.25. 
+At the beginning and at the end of regions methylation increases in two probes.
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
+draw_show_table(which.max(top$meth.max_y - top$meth.min_y),top,data)
+```
+
+## Comparing all methods 
+
+We use 8 methods which are available in metR package:
+
+* Ttest - t-Student test on methylation.rate
+
+* Wilcoxon - Wilcoxon test on methylation.rate
+
+* KS - Kolmogorov-Smirnov test on methylation.rate
+
+Regression methods, where number of succsess are number of methylated citosines :
+
+* Reg.Log - standard logistic regression
+
+* Reg.Mixed - logistic regression where random effects are positions of chromosome
+
+* Reg.Corr.Mixed - logistic regression where random effects are positions of chromosome and correlation matrix between position is previously estimated and included in `metR` package
+
+These methods sorts regions based on p.value of grouping variable.
+Methods Reg.Log.Beta, Reg.Mixed.Beta, Reg.Corr.Mixed.Beta order regions based on beta coefficients of grouping variable. 
+
+```{r fig.width=7.5, fig.height=2.5, echo = F}
 ggplot(top, aes(x = source, y = quantile)) + geom_boxplot(aes(fill = source))  + ggtitle('Distribution of rank rate by methods')  +
    scale_fill_brewer(palette = "Set1") + theme_minimal()  + theme(title = element_text(size = 14), axis.title = element_text(size = 13),
                            axis.text.y = element_text(size = 11), axis.text.x = element_text(size = 11, angle = 20) ,  legend.position = "None") +
@@ -350,7 +200,7 @@ ggplot(top, aes(x = source, y = quantile)) + geom_boxplot(aes(fill = source))  +
 
 ```
 
-```{r fig.width=7.5, fig.height=3.5}
+```{r fig.width=7.5, fig.height=3.5, echo = F}
 ggplot(top, aes(x = source, y = meth.diff)) + geom_boxplot(aes(fill = source))  + ggtitle('Distribution of methylation absolute difference by methods')  +
    scale_fill_brewer(palette = "Set1") + theme_minimal()  + theme(title = element_text(size = 14), axis.title = element_text(size = 13),
                            axis.text.y = element_text(size = 11), axis.text.x = element_text(size = 11, angle = 11) ,  legend.position = "None") +
@@ -359,7 +209,7 @@ ggplot(top, aes(x = source, y = meth.diff)) + geom_boxplot(aes(fill = source))  
 ```
 
 
-```{r fig.width=7.5, fig.height=3.5}
+```{r fig.width=7.5, fig.height=3.5, echo = F}
 ggplot(top, aes(x = source, y = meth.cov)) + geom_boxplot(aes(fill = source))  + ggtitle('Coverage distribution by methods')  +
    scale_fill_brewer(palette = "Set1") + theme_minimal()  + theme(title = element_text(size = 14), axis.title = element_text(size = 13),
                            axis.text.y = element_text(size = 11), axis.text.x = element_text(size = 11, angle = 20) ,  legend.position = "None") +
@@ -367,4 +217,215 @@ ggplot(top, aes(x = source, y = meth.cov)) + geom_boxplot(aes(fill = source))  +
   scale_x_discrete(limits=c('Reg.Corr.Mixed.Beta','Reg.Log.Beta','Reg.Mixed.Beta', 'Reg.Mixed', "KS", 'Reg.Log', 'Reg.Corr.Mixed', 'Ttest', 'Wilcoxon'))
 ```
 
-We can show, that these method given very different results. The rank rate is very good if we use Ttest, Reg.Log, Reg.Mixed.Beta and Reg.Log.Beta methods. The biggest differences we see for methylation coverage. Wilcoxon test recommended regions that have the most observations ~ 200. Reg.Corr.Mixed.Beta and Reg.Log.Beta proposed smaller group - about 10 observations. If we check methylation difference, Reg.Log.Beta and Reg.Mixed.Beta present very large difference in recommended regions
+We can show, that these method given very different results. The rank rate is very good if we use Ttest, Reg.Log, Reg.Mixed.Beta and Reg.Log.Beta methods. The biggest differences we see for methylation coverage. Wilcoxon test recommended regions that have the most observations ~ 200. Reg.Corr.Mixed.Beta and Reg.Log.Beta proposed smaller group - about 10 observations. If we check methylation difference, Reg.Log.Beta and Reg.Mixed.Beta present very large difference in recommended regions.
+
+# How we obtain these results?
+## 1. Preprocess data:
+
+```{r eval = F}
+library(metR)
+
+data('schizophrenia')
+control <- schizophrenia %>% filter(category == 'control') %>%
+  dplyr::select(-category)
+
+disease <- schizophrenia %>% filter(category == 'disease') %>%
+  dplyr::select(-category)
+```
+
+`preprocessing` function need two probes with specyfic columns:
+
+```{r}
+kable_styling(kable(head(control, 3), "html"), position = "left",
+font_size = 9, full_width = F) %>% row_spec(1:3, color = "black")
+```
+
+So:
+
+* chr - chromosome name
+
+* poz - position in chromosome
+
+* no - number of reads per position
+
+* meth - number of reads with methylated cytosine
+
+* unmeth - number of reads with unmethylated cytosine
+
+* meth.rate - ratio: meth/(meth + unmeth)
+
+```{r, eval = F}
+data <- preprocessing(control, disease)
+```
+
+```{r}
+kable_styling(kable(head(data, 3), "html"), position = "left",
+font_size = 9, full_width = F) %>% row_spec(1:3, color = "black") %>%
+  column_spec(3, background = "#f21a1a", color = 'white')
+```
+
+
+By `preprocessing` we get one data frame where we have both results of methylation in position and chromosome from control and disease samples. Prob columns indicates if data are from control samples (x), or from disease samples (y).
+
+
+## 2. Creating regions
+
+After preprocessing we can create region. After creation they will be tested if there is significant difference between two probes in methylation rate.
+
+We use function `create_tiles_max_gap` with argument `gaps.length = 100`. The same regions are observations that maximum difference position is gaps.length argument.
+
+```{r eval = T}
+data.tiles.3 <- create_tiles_max_gap(data, gaps.length = 100)
+```
+
+Column tiles indicates id of region in chromosome:
+
+```{r}
+kable_styling(kable(head(data.tiles.3, 3), "html"), position = "left",
+font_size = 9, full_width = F) %>% row_spec(1:3, color = "black")  %>%
+  column_spec(9, background = "#f21a1a", color = 'white')
+```
+
+It's also possible to use `create_tiles_fixed_length function`, where the same regions are observations that maximum difference position is `gaps.length` argument. If `common = TRUE` function creates second regions group that are min postion is (min postion + max position)/2 of k-region and max position is (min position + max position) of k+1 region.
+
+```{r, eval = F}
+data.tiles.1 <- create_tiles_fixed_length(data, tiles.length = 1000, common = F)
+data.tiles.2 <- create_tiles_fixed_length(data, tiles.length = 1000, common = T)
+```
+
+## 3. Get basic statistics
+
+We got basic statistics about two probes by `get_stats` function. This is helpful if we want check coverage of created regions or methylation difference.
+
+```{r fig.width=6, fig.height=3, message=F, warning = F}
+stats.3 <- get_stats(data.tiles.3)
+kable_styling(kable(head(stats.3, 3), "html"), position = "left",
+font_size = 9) %>% row_spec(1:3, color = "black") 
+```
+
+We get basic statisics about each region:
+
+* minimum and maximum position (start and end columns)
+
+* min, max, std of methylation.rate in each probe (_x from control sample and _y from disease sample)
+
+* meth.diff - absolute difference between mean of methylation rate in control and disease sample
+
+* quantile - rank function based on quantile regression which uses information about number of observations in region.
+
+We also can join e.g stats.3 and data.tiles.3 on chromosome, start and end column and analyzing regions only if they coverage is greater than some specyfic values or other condition.
+
+## 4. Finding DMR
+
+We get interesting regions by using `find_DMR` function. `Data` argument is data.frame from `create_tiles function`. In methods argument we can type methods which we want to use.
+
+```{r, eval = F}
+# eval = F
+result <- find_DMR(data.tiles.3, methods = c('Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'))
+```
+
+Results of running function above are included in package. So now we only load data:
+
+```{r}
+data('find.DMR.results')
+names(find.DMR.results)
+```
+
+This is a list of data.frames. One data.frame is result of running specyfic methods.
+
+If we want also get results from sorting by beta coefficient we can run:
+
+```{r eval = F}
+find.DMR.results <- find_DMR(data.tiles.3, methods = c('Reg.Log', 'Reg.Corr.Mixed', 'Reg.Corr.Mixed')
+                    , p.value.log.reg = 0.001, p.value.reg.mixed = 0.001, p.value.reg.corr.mixed = 0.001)
+```
+
+It's better when we use results previously obtained from sorting by p.value of grouping variable because we can spare computing time:
+
+```{r}
+find.DMR.results$Reg.Log.Beta <- find.DMR.results$Reg.Log %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+
+find.DMR.results$Reg.Mixed.Beta <- find.DMR.results$Reg.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+
+find.DMR.results$Reg.Corr.Mixed.Beta <- find.DMR.results$Reg.Corr.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+```
+
+Now we can select top 100 regions by each method:
+
+```{r eval = F}
+get_top <- function(data, n, stats){
+  data %>% slice(1:n) %>%
+    left_join(stats, by = c('chr', 'start', 'end')) %>%
+    dplyr::select(chr, start, end, meth.cov, meth.max_x, meth.max_y  
+                  ,meth.mean_x, meth.mean_y, meth.min_x,
+                  meth.min_y, meth.sd_x, meth.sd_y, meth.diff,quantile)
+}
+
+
+top <- do.call(gdata::combine,lapply(find.DMR.results, get_top, n = 100, stats = stats.3))
+
+```
+
+In subsection 'Comparing all methods' data from `top` were plotted.
+
+## 4. Plotting methylation
+
+Region in this subsection was plotted in Examples of differentially methylated regions above.
+
+We use `draw_methylation` function with basic arguments: 
+
+* data - data.frame from `preprocessing` function or data.frame from `create_tiles_max_gap` or `create_tiles_fixed_length` functions
+
+* chr - chromosome name of region that will be plotted
+
+* start - min position of region that will be plotted
+
+* end - max position of region that will be plotted
+
+```{r fig.width=7.5, fig.height=2.5}
+i = which.max(top$quantile)
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = F,
+        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
+        axis.text.x = 9, axis.text.y = 9)
+```
+
+
+Change `legend.position` to get legend of logarithm reads in each position:
+
+```{r fig.width=7.5, fig.height=3.5}
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = F,
+        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'bottom',
+        axis.text.x = 9, axis.text.y = 9, legend.text = 7, legend.title = 8)
+```
+
+Change `bind.probes` to TRUE argument if you want binding each observations between two probes:
+
+```{r fig.width=7.5, fig.height=2.5}
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = T,
+                 smooth.methylation = T,
+  size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
+        axis.text.x = 9, axis.text.y = 9)
+```
+
+Change `smooth.methylation` to FALSE if you don't want smoothing observations:
+
+```{r fig.width=7.5, fig.height=2.5}
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = T,smooth.methylation = F,
+        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
+        axis.text.x = 9, axis.text.y = 9)
+```
+
+Other arguments are resposible for size of element on plots.
+
+
+
+
+
+
+
+
+
+
+
+
+

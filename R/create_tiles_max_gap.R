@@ -1,39 +1,29 @@
 #' Create regions for testing methylation difference
 #'
-#' The same regions are observation that maximum difference position is gaps.length argument
+#' The same regions are observations that maximum difference position is gaps.length argument
 #' @param data dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.
 #' @param gaps.length integer number that specifes maximum difference position between the same methylation regions
 #' @return data.frame from parameter data with extra column tiles that is region id number within chromosomes
 #' @export
 #' @examples
-#' data('sample.1')
-#' data('sample.2')
-#' data <- preprocessing(sample.1, sample.2)
-#' create.tiles.max.gap(data, gaps.lenth = 100)
+#' data('schizophrenia')
+#' control <- schizophrenia %>% filter(category == 'control') %>%
+#' dplyr::select(-category)
+#'
+#' disease <- schizophrenia %>% filter(category == 'disease') %>%
+#'  dplyr::select(-category)
+#'
+#' data <- preprocessing(control, disease)
+#' head(create_tiles_max_gap(data, gaps.length = 100))
 
-create.tiles.max.gap <- function(data, gaps.length){
+create_tiles_max_gap <- function(data, gaps.length){
 
+  check_data_without_tiles(data)
 
-  data.colnames <- c('chr', 'poz', 'prob', 'no', 'meth', 'unmeth', 'meth.rate')
-
-  if(!all.equal(colnames(data), data.colnames))
-    stop("Error: Incorrect colnames in data")
-
-  data.types <- c("character","integer","character","integer","integer", "integer", 'double')
-  names(data.types) <- data.colnames
-
-  if(!all.equal(sapply(data, typeof), data.types))
-    stop("Error: Incorrect datatypes in data")
-
-  if (!all(data$poz > 0) | !all(data$chr %in% paste0('chr', c(1:22, "X", "Y", "M"))) |
-      !all(data$meth + data$unmeth == data$no) | !all(round(data$meth /data$no,3) == round(data$meth.rate,3)))
-    stop("Error: Incorrect values in data")
-
-  if(!zapsmall(gaps.length, 15) == round(gaps.length) | gaps.length <= 0)
-    stop("Error: Incorrect gaps.length argument")
+  check_args_create_tiles_max_gap(gaps.length)
 
   data <- split(data, f = data$chr)
-  data <- lapply(data, create.tiles.chr, gaps.length)
+  data <- lapply(data, create_tiles_on_chr, gaps.length)
   do.call(rbind, data)
 }
 
