@@ -7,8 +7,8 @@
 get_stats(data)
 }
 \arguments{
-\item{data}{dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
-create.tiles.fixed.length}
+\item{data}{dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
+create_tiles_fixed_length}
 }
 \value{
 data.frame which is summing-up regions specifed by tiles and tiles.common columns in data

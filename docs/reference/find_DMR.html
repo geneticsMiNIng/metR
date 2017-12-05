@@ -160,13 +160,181 @@ did not convergence well</p></td>
  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>category</span>)
 
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='preprocessing.html'>preprocessing</a></span>(<span class='no'>control</span>, <span class='no'>disease</span>)
-<span class='no'>data.tiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_tiles_max_gap.html'>create_tiles_max_gap</a></span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .(poz, tiles): nie udało się znaleźć funkcji '.'</span></div><div class='input'><span class='no'>data.tiles.small</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>tiles</span> <span class='kw'>&lt;</span> <span class='fl'>30</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(lhs, parent, parent): nie znaleziono obiektu 'data.tiles'</span></div><div class='input'>
+<span class='no'>data.tiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_tiles_max_gap.html'>create_tiles_max_gap</a></span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='no'>data.tiles.small</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>tiles</span> <span class='kw'>&lt;</span> <span class='fl'>30</span>)
+
  <span class='co'>#finding DMR by all methods with sorting on p.values</span>
-<span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Ttest'</span>, <span class='st'>'KS'</span>, <span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>))</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): nie znaleziono obiektu 'data.tiles.small'</span></div><div class='input'>
+<span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Ttest'</span>, <span class='st'>'KS'</span>, <span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>))</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Wilcoxon test"
+#&gt; [1] "Started: Finding DMR by t-test"
+#&gt; [1] "Started: Finding DMR by KS test"
+#&gt; [1] "Started: Finding DMR by Logistic Regression"
+#&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
+#&gt; |=======                                               | 14% ~14 s remaining    |==============                                        | 28% ~7 s remaining     |================                                      | 31% ~6 s remaining     |==================                                    | 34% ~5 s remaining     |======================                                | 41% ~4 s remaining     |===========================                           | 52% ~3 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
+#&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Wilcoxon
+#&gt; # A tibble: 29 x 4
+#&gt;      chr  start    end    p.value
+#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1  chr1  84100  84338 0.01073342
+#&gt;  2  chr1  82959  83254 0.05333685
+#&gt;  3  chr1  86359  86505 0.05333685
+#&gt;  4  chr1  83588  83698 0.05447404
+#&gt;  5  chr1  81698  81863 0.07186064
+#&gt;  6  chr1  84722  84935 0.09751254
+#&gt;  7  chr1 220557 220666 0.12500000
+#&gt;  8  chr1 221169 221365 0.12500000
+#&gt;  9  chr1  85472  85575 0.14891467
+#&gt; 10  chr1  81984  82025 0.17356817
+#&gt; # ... with 19 more rows
+#&gt; 
+#&gt; $Ttest
+#&gt; # A tibble: 29 x 4
+#&gt;      chr  start    end      p.value
+#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
+#&gt;  1  chr1  83588  83698 3.048765e-06
+#&gt;  2  chr1  86359  86505 2.378342e-04
+#&gt;  3  chr1  82959  83254 3.665470e-04
+#&gt;  4  chr1 221169 221365 4.016274e-04
+#&gt;  5  chr1  81984  82025 6.787773e-04
+#&gt;  6  chr1  83880  83980 7.896496e-04
+#&gt;  7  chr1  84722  84935 5.759169e-03
+#&gt;  8  chr1  87096  87175 4.736525e-02
+#&gt;  9  chr1 220557 220666 5.260321e-02
+#&gt; 10  chr1 220872 220952 4.013260e-01
+#&gt; # ... with 19 more rows
+#&gt; 
+#&gt; $KS
+#&gt; # A tibble: 29 x 4
+#&gt;      chr  start    end     p.value
+#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
+#&gt;  1  chr1  84100  84338 0.001823764
+#&gt;  2  chr1  82959  83254 0.013475890
+#&gt;  3  chr1  83588  83698 0.013475890
+#&gt;  4  chr1  86359  86505 0.013475890
+#&gt;  5  chr1  81698  81863 0.036631053
+#&gt;  6  chr1  84722  84935 0.036631053
+#&gt;  7  chr1 221169 221365 0.036631053
+#&gt;  8  chr1  81984  82025 0.099561848
+#&gt;  9  chr1  83880  83980 0.099561848
+#&gt; 10  chr1  85472  85575 0.099561848
+#&gt; # ... with 19 more rows
+#&gt; 
+#&gt; $Reg.Log
+#&gt; # A tibble: 20 x 5
+#&gt;      chr  start    end      p.value  beta.coef
+#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1  chr1  83588  83698 1.519918e-05 2.19688537
+#&gt;  2  chr1  82959  83254 1.100881e-04 1.57739904
+#&gt;  3  chr1  84100  84338 2.882855e-04 1.65822808
+#&gt;  4  chr1  86359  86505 3.656493e-03 2.31792789
+#&gt;  5  chr1  84722  84935 8.574373e-03 2.81693813
+#&gt;  6  chr1  83880  83980 1.784013e-02 1.65160526
+#&gt;  7  chr1 221169 221365 3.023693e-02 0.89940934
+#&gt;  8  chr1 222086 222090 3.699038e-02 1.25276297
+#&gt;  9  chr1  82603  82625 5.504190e-02 1.05605267
+#&gt; 10  chr1  85472  85575 8.465175e-02 1.28093385
+#&gt; 11  chr1 221803 221854 8.517635e-02 0.91629073
+#&gt; 12  chr1  87096  87175 9.549951e-02 1.58870244
+#&gt; 13  chr1  86661  86668 1.655336e-01 1.26851133
+#&gt; 14  chr1  85292  85316 1.913045e-01 1.18562367
+#&gt; 15  chr1  81698  81863 2.679230e-01 0.31153329
+#&gt; 16  chr1  81984  82025 3.180319e-01 0.32472153
+#&gt; 17  chr1 220872 220952 3.946347e-01 0.54692060
+#&gt; 18  chr1  81412  81442 4.334074e-01 0.31153329
+#&gt; 19  chr1 220557 220666 6.029379e-01 0.21107465
+#&gt; 20  chr1 219816 219880 9.372464e-01 0.04864693
+#&gt; 
+#&gt; $Reg.Mixed
+#&gt; # A tibble: 11 x 5
+#&gt;      chr  start    end      p.value  beta.coef
+#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1  chr1  83588  83698 1.521418e-05 2.19565841
+#&gt;  2  chr1  82959  83254 1.181530e-04 1.56687830
+#&gt;  3  chr1  86359  86505 3.811671e-03 2.30258509
+#&gt;  4  chr1  84722  84935 8.732648e-03 2.80748410
+#&gt;  5  chr1  83880  83980 1.788381e-02 1.65068087
+#&gt;  6  chr1 221169 221365 2.998610e-02 0.89794159
+#&gt;  7  chr1  87096  87175 9.556622e-02 1.58696506
+#&gt;  8  chr1  81984  82025 3.181493e-01 0.32463778
+#&gt;  9  chr1 220872 220952 3.825471e-01 0.55961579
+#&gt; 10  chr1 220557 220666 5.744138e-01 0.22665737
+#&gt; 11  chr1 219816 219880 9.370590e-01 0.04879016
+#&gt; 
+#&gt; $Reg.Corr.Mixed
+#&gt; # A tibble: 13 x 5
+#&gt;      chr  start    end     p.value  beta.coef
+#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1  chr1  82959  83254 0.007918476  2.2600171
+#&gt;  2  chr1  84100  84338 0.010222483  3.0848526
+#&gt;  3  chr1  83588  83698 0.010380179  3.2544319
+#&gt;  4  chr1  86359  86505 0.036781488  5.3136593
+#&gt;  5  chr1  87096  87175 0.052391053  2.4186572
+#&gt;  6  chr1  81698  81863 0.065241461  0.8510306
+#&gt;  7  chr1 220557 220666 0.112228905 -0.4947742
+#&gt;  8  chr1  85472  85575 0.154777532  2.6553906
+#&gt;  9  chr1  83880  83980 0.188767710  2.6947221
+#&gt; 10  chr1  81984  82025 0.260540995  1.0858214
+#&gt; 11  chr1 219816 219880 0.343682945 -0.2581625
+#&gt; 12  chr1 220872 220952 0.450486788 -0.6860944
+#&gt; 13  chr1 221169 221365 0.712882389  0.1152671
+#&gt; </div><div class='input'>
 <span class='co'>#finding DMR by 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'  with sorting on beta values</span>
-<span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>p.value.reg.mixed</span> <span class='kw'>=</span> <span class='fl'>0.02</span>, <span class='kw'>p.value.reg.corr.mixed</span><span class='kw'>=</span><span class='fl'>0.03</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): nie znaleziono obiektu 'data.tiles.small'</span></div><div class='input'>
+<span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>p.value.reg.mixed</span> <span class='kw'>=</span> <span class='fl'>0.02</span>, <span class='kw'>p.value.reg.corr.mixed</span><span class='kw'>=</span><span class='fl'>0.03</span>)</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Logistic Regression"
+#&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
+#&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
+#&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~0 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Reg.Log
+#&gt; # A tibble: 5 x 5
+#&gt;     chr start   end      p.value beta.coef
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1  chr1 84722 84935 8.574373e-03  2.816938
+#&gt; 2  chr1 86359 86505 3.656493e-03  2.317928
+#&gt; 3  chr1 83588 83698 1.519918e-05  2.196885
+#&gt; 4  chr1 84100 84338 2.882855e-04  1.658228
+#&gt; 5  chr1 82959 83254 1.100881e-04  1.577399
+#&gt; 
+#&gt; $Reg.Mixed
+#&gt; # A tibble: 5 x 5
+#&gt;     chr start   end      p.value beta.coef
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1  chr1 84722 84935 8.732648e-03  2.807484
+#&gt; 2  chr1 86359 86505 3.811671e-03  2.302585
+#&gt; 3  chr1 83588 83698 1.521418e-05  2.195658
+#&gt; 4  chr1 83880 83980 1.788381e-02  1.650681
+#&gt; 5  chr1 82959 83254 1.181530e-04  1.566878
+#&gt; 
+#&gt; $Reg.Corr.Mixed
+#&gt; # A tibble: 3 x 5
+#&gt;     chr start   end     p.value beta.coef
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1  chr1 83588 83698 0.010380179  3.254432
+#&gt; 2  chr1 84100 84338 0.010222483  3.084853
+#&gt; 3  chr1 82959 83254 0.007918476  2.260017
+#&gt; </div><div class='input'>
 <span class='co'>#finding DMR only by 'Reg.Log' with sorting on beta values and 'Wilcoxon' with sorting on p.values</span>
-<span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Reg.Log'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): nie znaleziono obiektu 'data.tiles.small'</span></div></pre>
+<span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Reg.Log'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Wilcoxon test"
+#&gt; [1] "Started: Finding DMR by Logistic Regression"</div><div class='output co'>#&gt; $Wilcoxon
+#&gt; # A tibble: 29 x 4
+#&gt;      chr  start    end    p.value
+#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1  chr1  84100  84338 0.01073342
+#&gt;  2  chr1  82959  83254 0.05333685
+#&gt;  3  chr1  86359  86505 0.05333685
+#&gt;  4  chr1  83588  83698 0.05447404
+#&gt;  5  chr1  81698  81863 0.07186064
+#&gt;  6  chr1  84722  84935 0.09751254
+#&gt;  7  chr1 220557 220666 0.12500000
+#&gt;  8  chr1 221169 221365 0.12500000
+#&gt;  9  chr1  85472  85575 0.14891467
+#&gt; 10  chr1  81984  82025 0.17356817
+#&gt; # ... with 19 more rows
+#&gt; 
+#&gt; $Reg.Log
+#&gt; # A tibble: 3 x 5
+#&gt;     chr start   end      p.value beta.coef
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1  chr1 83588 83698 1.519918e-05  2.196885
+#&gt; 2  chr1 84100 84338 2.882855e-04  1.658228
+#&gt; 3  chr1 82959 83254 1.100881e-04  1.577399
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

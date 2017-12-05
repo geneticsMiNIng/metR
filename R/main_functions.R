@@ -20,12 +20,7 @@ data
 
 
 main_get_stats <- function(data, map){
-  data %<>% mutate(poz.new = poz)
-  setDT(data)
-
-  data <- data[map, on=.(poz.new >= start, poz.new <= end, chr = chr), nomatch = 0,
-               .(chr, poz, prob, no, meth, unmeth, meth.rate, start, end), allow.cartesian = T] %>%
-    group_by(chr, start, end, prob) %>%
+  data <- data %>%
     summarise(meth.mean = mean(meth.rate), meth.cov = n(), meth.sd = sd(meth.rate),
               meth.min = min(meth.rate), meth.max = max(meth.rate))  %>%
     gather(Var, val, starts_with("meth.")) %>%

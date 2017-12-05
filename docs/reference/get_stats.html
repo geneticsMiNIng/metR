@@ -106,8 +106,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
-create.tiles.fixed.length</p></td>
+      <td><p>dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
+create_tiles_fixed_length</p></td>
     </tr>
     </table>
     
@@ -125,7 +125,19 @@ create.tiles.fixed.length</p></td>
  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>category</span>)
 
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='preprocessing.html'>preprocessing</a></span>(<span class='no'>control</span>, <span class='no'>disease</span>)
-<span class='no'>data.tiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_tiles_max_gap.html'>create_tiles_max_gap</a></span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .(poz, tiles): nie udało się znaleźć funkcji '.'</span></div><div class='input'><span class='fu'>head</span>(<span class='fu'>get_stats</span>(<span class='no'>data.tiles</span>))</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): nie znaleziono obiektu 'data.tiles'</span></div></pre>
+<span class='no'>data.tiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_tiles_max_gap.html'>create_tiles_max_gap</a></span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='fu'>head</span>(<span class='fu'>get_stats</span>(<span class='no'>data.tiles</span>))</div><div class='output co'>#&gt; # A tibble: 6 x 14
+#&gt; # Groups:   chr, start, end [6]
+#&gt;     chr start   end meth.cov meth.max_x meth.max_y meth.mean_x meth.mean_y
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+#&gt; 1  chr1 81412 81442        2  0.8285714  0.8684211   0.8285714   0.8684211
+#&gt; 2  chr1 81546 81546        1  0.8285714  0.8684211   0.8285714   0.8684211
+#&gt; 3  chr1 81698 81863        4  0.8285714  0.8684211   0.8285714   0.8684211
+#&gt; 4  chr1 81984 82025        3  0.8285714  0.8684211   0.8252101   0.8672515
+#&gt; 5  chr1 82254 82254        1  0.8235294  0.8552632   0.8235294   0.8552632
+#&gt; 6  chr1 82603 82625        2  0.7272727  0.8846154   0.7272727   0.8846154
+#&gt; # ... with 6 more variables: meth.min_x &lt;dbl&gt;, meth.min_y &lt;dbl&gt;,
+#&gt; #   meth.sd_x &lt;dbl&gt;, meth.sd_y &lt;dbl&gt;, meth.diff &lt;dbl&gt;, quantile &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

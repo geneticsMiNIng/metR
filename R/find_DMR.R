@@ -54,8 +54,7 @@ find_DMR <- function(data, methods, p.value.log.reg = NULL,
 
   check_data_without_tiles(data[,1:7])
   check_tiles_in_data(data)
-  map <- create_map(data)
-  data <- find_DMR_prep_data(data, map)
+  data <- group_data(data, prob = F)
 
 find_DMR_given_methods(data, methods, p.value.log.reg,p.value.reg.mixed, p.value.reg.corr.mixed,
                        beta.coef.max)

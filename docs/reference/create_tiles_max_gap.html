@@ -128,7 +128,13 @@
  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>category</span>)
 
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='preprocessing.html'>preprocessing</a></span>(<span class='no'>control</span>, <span class='no'>disease</span>)
-<span class='fu'>head</span>(<span class='fu'>create_tiles_max_gap</span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt; <span class='error'>Error in .(poz, tiles): nie udało się znaleźć funkcji '.'</span></div></pre>
+<span class='fu'>head</span>(<span class='fu'>create_tiles_max_gap</span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt;         chr   poz prob no meth unmeth meth.rate tiles
+#&gt; chr1.1 chr1 81412    x 35   29      6 0.8285714     1
+#&gt; chr1.2 chr1 81412    y 76   66     10 0.8684211     1
+#&gt; chr1.3 chr1 81442    x 35   29      6 0.8285714     1
+#&gt; chr1.4 chr1 81442    y 76   66     10 0.8684211     1
+#&gt; chr1.5 chr1 81546    x 35   29      6 0.8285714     2
+#&gt; chr1.6 chr1 81546    y 76   66     10 0.8684211     2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

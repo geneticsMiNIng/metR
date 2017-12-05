@@ -91,13 +91,3 @@ find_DMR_given_methods <- function(data, methods, p.value.log.reg,
   return(result)
 }
 
-find_DMR_prep_data <- function(data, map){
-  data %<>% mutate(poz.new = poz)
-
-  setDT(data)
-  setDT(map)
-
-  data <- data[map, on=.(poz.new >= start, poz.new <= end, chr = chr), nomatch = 0,
-               .(chr, poz, prob, no, meth, unmeth, meth.rate, start, end), allow.cartesian = T] %>%
-    group_by(chr, start, end)
-}

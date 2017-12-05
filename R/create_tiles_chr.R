@@ -6,9 +6,12 @@ create_tiles_on_chr <- function(data.chr, gaps.length){
   s1 <- c(1, which(poz$diff >= gaps.length))
   s2 <- c(s1[-1] - 1, nrow(poz))
   tiles <- 1:length(s1)
-  to_bind <- data.table(s1,s2,tiles)
-  setDT(poz)
-  poz <- poz[to_bind, on=.(id >= s1, id <= s2), nomatch = 0, .(poz, tiles)]
 
-  data.chr %>% left_join(poz, by = c("poz"= "poz"))
+  id <- mapply(s1, FUN = function(s1,s2, tiles){
+    data.frame(id = s1:s2, tiles = tiles)
+  }, s2, tiles, SIMPLIFY = F)
+  id <- do.call('rbind', id)
+
+  data.chr %>% left_join(poz, by = c("poz"= "poz")) %>%
+    left_join(id, c("id" = "id")) %>% dplyr::select(-c(diff, id))
 }
