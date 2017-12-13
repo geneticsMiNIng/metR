@@ -7,7 +7,7 @@
 get_stats(data)
 }
 \arguments{
-\item{data}{dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
+\item{data}{dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
 create_tiles_fixed_length}
 }
 \value{

@@ -97,7 +97,7 @@
 
     
     <p>Get p.value from K-S test based on methylation rate in two probes.
-This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used sepparately.</p>
+This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used separately.</p>
     
 
     <pre class="usage"><span class='fu'>test_ks</span>(<span class='no'>data</span>)</pre>
@@ -107,10 +107,10 @@ This function doesn't respect tiles or tiles.common column. This function is usi
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+      <td><p>There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 This dataframe is result of function preprocessing.
-2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
-create.tiles.fixed.length.</p></td>
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
+create_tiles_fixed_length.</p></td>
     </tr>
     </table>
     
@@ -132,9 +132,9 @@ create.tiles.fixed.length.</p></td>
 <span class='no'>data.test</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>tiles</span> <span class='kw'>==</span> <span class='fl'>10</span>)
 <span class='fu'>test_ks</span>(<span class='no'>data.test</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot compute exact p-value with ties</span></div><div class='output co'>#&gt;      p.value
 #&gt; 1 0.09956185</div><div class='input'><span class='co'># or by some self-defined regions:</span>
-<span class='no'>data.test.2</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>chr</span> <span class='kw'>==</span> <span class='st'>'chr1'</span>, <span class='no'>poz</span> <span class='kw'>&gt;</span> <span class='fl'>80000</span>, <span class='no'>poz</span> <span class='kw'>&lt;</span> <span class='fl'>10000</span>)
-<span class='fu'>test_ks</span>(<span class='no'>data.test.2</span>)</div><div class='output co'>#&gt;   p.value
-#&gt; 1      NA</div></pre>
+<span class='no'>data.test.2</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>chr</span> <span class='kw'>==</span> <span class='st'>'chr1'</span>, <span class='no'>poz</span> <span class='kw'>&gt;</span> <span class='fl'>80000</span>, <span class='no'>poz</span> <span class='kw'>&lt;</span> <span class='fl'>100000</span>)
+<span class='fu'>test_ks</span>(<span class='no'>data.test.2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot compute exact p-value with ties</span></div><div class='output co'>#&gt;   p.value
+#&gt; 1       0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

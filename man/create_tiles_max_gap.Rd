@@ -7,9 +7,9 @@
 create_tiles_max_gap(data, gaps.length)
 }
 \arguments{
-\item{data}{dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.}
+\item{data}{dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.}
 
-\item{gaps.length}{integer number that specifes maximum difference position between the same methylation regions}
+\item{gaps.length}{integer number that specifies maximum difference position between the same methylation regions}
 }
 \value{
 data.frame from parameter data with extra column tiles that is region id number within chromosomes

@@ -2,9 +2,9 @@
 #'
 #' Finding DMR by Wilcoxon, t-Student, Kolmogorov-Smirnow tests or logistic regression, logistic regression with mixed models,
 #' logistic regression with mixed models with correlation matrix
-#' @param data There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+#' @param data There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 #' This dataframe is result of function preprocessing.
-#' 2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+#' 2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 #' create.tiles.fixed.length.
 #' @param methods vectors with given methods. Possible values are: 'Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed',
 #' 'Reg.Corr.Mixed'.
@@ -13,7 +13,7 @@
 #' 'KS' - Kolmogorov-Smirnov test;
 #' 'Reg.Log' - Wald test of grouping variable from logistic regression;
 #' 'Reg.Mixed' - Wald test of grouping variable from logistic regression with mixed effects;
-#' 'Reg.Corr.Mixed' - Wald test of grouping variable from logistic regression with mixed effect and estimated previuos correlation matrix
+#' 'Reg.Corr.Mixed' - Wald test of grouping variable from logistic regression with mixed effect and estimated previous correlation matrix
 #' @param p.value.log.reg if not NULL regions with p.value of prob variable smaller than p.value.log.reg are returned and  decreasingly ordered by absolute value of beta coefficient
 #' of prob variable otherwise regions ale increasingly ordered by p.value
 #' @param p.value.reg.mixed if not NULL regions with p.value of prob variable smaller than p.value.log.reg are returned and  decreasingly ordered by absolute value of beta coefficient

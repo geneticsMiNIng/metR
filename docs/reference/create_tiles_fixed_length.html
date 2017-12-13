@@ -96,7 +96,7 @@
     </div>
 
     
-    <p>The same regions are observations that maximum difference position is gaps.length argument</p>
+    <p>The same regions are observations where maximum difference between minimum and maximum position is tiles.length argument.</p>
     
 
     <pre class="usage"><span class='fu'>create_tiles_fixed_length</span>(<span class='no'>data</span>, <span class='no'>tiles.length</span>, <span class='kw'>common</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -106,16 +106,16 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.</p></td>
+      <td><p>dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.</p></td>
     </tr>
     <tr>
       <th>tiles.length</th>
-      <td><p>integer number that specifes maximum difference between minimum and maximum position in the same methylation regions</p></td>
+      <td><p>integer number that specifies maximum difference between minimum and maximum position in the same methylation regions.
+k-region in chromosome are observations for which position is between [k * tiles.length;(k + 1)* tiles.length -1]</p></td>
     </tr>
     <tr>
       <th>common</th>
-      <td><p>logi value. If TRUE this function creates second regions group that are min postion is (min postion + max position)/2 of k-region and
-max position is (min position + max position) of k+1 region.</p></td>
+      <td><p>logi value. If TRUE this function creates second regions group that k-region in chromosome are observations for which position is between [ k * tiles.length + tiles.length/2 ; (k + 1)* tiles.length -1 + tiles.length/2]</p></td>
     </tr>
     </table>
     

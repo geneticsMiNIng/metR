@@ -11,7 +11,7 @@ If all datasets and function are in metR then functions returns message:
 'OK! All functions and datasets are complet in metR package'. Otherwise function is stopped with message why.
 }
 \description{
-Check if all neccesary datasets and functions are in metR
+Check if all necessary datasets and functions are in metR
 }
 \examples{
 check_before_using()

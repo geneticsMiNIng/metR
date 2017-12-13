@@ -27,4 +27,5 @@ disease <- schizophrenia \%>\% filter(category == 'disease') \%>\%
  dplyr::select(-category)
 
 data <- preprocessing(control, disease)
+head(data)
 }

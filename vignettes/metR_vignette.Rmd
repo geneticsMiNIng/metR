@@ -16,7 +16,7 @@ vignette: >
 
 # Introduction
 
-`metR` package allows comprehensive data analysis from methylation studies. By `metR` we can create regions, get basic statistics about them, plot methylation rate or arrange created regions from the most interesing by diffrent methods. 
+`metR` package allows comprehensive data analysis from methylation studies. By `metR` we can create regions, get basic statistics about them, plot methylation rate or arrange created regions from the most interesting by different methods. 
 
 
 ```{r, eval = F}
@@ -28,7 +28,7 @@ library(kableExtra)
 library(knitr)
 ```
 
-Initially we check if `metR` package includes all neccesary datasets and functions:
+Initially we check if `metR` package includes all necessary datasets and functions:
 
 ```{r, include=FALSE}
 library(metR)
@@ -94,12 +94,16 @@ draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = F,
         size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
         axis.text.x = 9, axis.text.y = 9)
 
-kable_styling(kable(row, "html"), position = "left",
-font_size = 9) %>% row_spec(1, color = "black") 
+print(kable_styling(kable(row[,1:8], "html" , bootstrap_options = "striped" , full_width = T), position = "left",
+font_size = 11) %>% row_spec(1, color = "black"))
+
+print(kable_styling(kable(row[,9:15], "html", bootstrap_options = "striped" , full_width = T), position = "left",
+font_size = 11) %>% row_spec(1, color = "black"))
+
 }
 ```
 
-```{r fig.width=7.5, fig.height=2.5, echo = F}
+```{r fig.width=7.5, fig.height=2.5, echo = F, results='asis'}
 draw_show_table(which.max(top$meth.cov),top,data)
 ```
 
@@ -107,7 +111,7 @@ draw_show_table(which.max(top$meth.cov),top,data)
 
 This region has the largest mean of methylation rate in control sample from interesting areas. We have 104  observations and mean of methylation rate is equal 1. This means that all of 104 observations have methylation rate on the level 1!
 
-```{r fig.width=7.5, fig.height=2.5, echo = F}
+```{r fig.width=7.5, fig.height=2.5, echo = F, results='asis'}
 draw_show_table(which.max(top$meth.mean_x),top,data)
 ```
 
@@ -117,16 +121,16 @@ This region has the smallest mean of methylation rate in disease sample from int
 
 This is reverse example to the previous one.
 
-```{r fig.width=7.5, fig.height=2.5, echo = F}
+```{r fig.width=7.5, fig.height=2.5, echo = F, results='asis'}
 draw_show_table(which.min(top$meth.mean_y),top,data)
 ```
 
 ### 4. Region with maximum standard deviation of methylation rate in control sample
 
-We see very interesing regions below. 
+We see very interesting regions below. 
 In this example methylation rate start from 0 in both sample and increase to 1 in control sample and 0.75 in disease sample.
 
-```{r fig.width=7.5, fig.height=2.5, echo = F}
+```{r fig.width=7.5, fig.height=2.5, echo = F, results='asis'}
 draw_show_table(which.max(top$meth.sd_x),top,data)
 ```
 
@@ -134,7 +138,7 @@ draw_show_table(which.max(top$meth.sd_x),top,data)
 
 This area has only two observations but methylation difference between them is huge and equal 0.7.
 
-```{r fig.width=7.5, fig.height=2.5, echo = F}
+```{r fig.width=7.5, fig.height=2.5, echo = F, results='asis'}
 draw_show_table(which.max(top$meth.diff),top,data)
 ```
 
@@ -144,7 +148,7 @@ This area has maximum rank function. Rank function is based on quantile regressi
 In this example methylation difference between probes is the biggest with respect to number of observations.
 Methylation difference is close to methylation difference in previous example but has more observation (11 to 2). 
 
-```{r fig.width=7.5, fig.height=2.5, echo = F}
+```{r fig.width=7.5, fig.height=2.5, echo = F, results='asis'}
 draw_show_table(which.max(top$quantile),top,data)
 ```
 
@@ -152,10 +156,10 @@ draw_show_table(which.max(top$quantile),top,data)
 
 This region has the biggest methylation range in control sample from interesting areas. 
 We see that methylation rate in control sample starts from 1 and decreases to 0.
-In disease sample methylation rate starts from level 0.9 and deacreases to 0.15.
-Curious observations is occuurance that at the beginning of region we see bigger methylation in control sample and at the end of region reverse case.
+In disease sample methylation rate starts from level 0.9 and decreases to 0.15.
+Curious observations is occurence that at the beginning of region we see bigger methylation in control sample and at the end of region reverse case.
 
-```{r fig.width=7.5, fig.height=2.5, echo = F}
+```{r fig.width=7.5, fig.height=2.5, echo = F, results='asis'}
 draw_show_table(which.max(top$meth.max_x - top$meth.min_x),top,data)
 ```
 
@@ -165,7 +169,7 @@ This region has the biggest methylation range in disease sample from interesting
 In the middle of region we can notice that methylation rate in disease sample is equal to 0 and in control is around 0.25. 
 At the beginning and at the end of regions methylation increases in two probes.
 
-```{r fig.width=7.5, fig.height=2.5, echo = F}
+```{r fig.width=7.5, fig.height=2.5, echo = F, results='asis'}
 draw_show_table(which.max(top$meth.max_y - top$meth.min_y),top,data)
 ```
 
@@ -179,7 +183,7 @@ We use 8 methods which are available in metR package:
 
 * KS - Kolmogorov-Smirnov test on methylation.rate
 
-Regression methods, where number of succsess are number of methylated citosines :
+Regression methods, where number of success are number of methylated citosines :
 
 * Reg.Log - standard logistic regression
 
@@ -233,7 +237,7 @@ disease <- schizophrenia %>% filter(category == 'disease') %>%
   dplyr::select(-category)
 ```
 
-`preprocessing` function need two probes with specyfic columns:
+`preprocessing` function need two probes with specific columns:
 
 ```{r}
 kable_styling(kable(head(control, 3), "html"), position = "left",
@@ -286,7 +290,7 @@ font_size = 9, full_width = F) %>% row_spec(1:3, color = "black")  %>%
   column_spec(9, background = "#f21a1a", color = 'white')
 ```
 
-It's also possible to use `create_tiles_fixed_length function`, where the same regions are observations that maximum difference position is `gaps.length` argument. If `common = TRUE` function creates second regions group that are min postion is (min postion + max position)/2 of k-region and max position is (min position + max position) of k+1 region.
+It's also possible to use `create_tiles_fixed_length function`, where `tiles.length` that specifies maximum difference between minimum and maximum position in the same methylation regions. If `common = TRUE` function creates second regions group that are min position is (min position + max position)/2 of k-region and max position is (min position + max position) of k+1 region.
 
 ```{r, eval = F}
 data.tiles.1 <- create_tiles_fixed_length(data, tiles.length = 1000, common = F)
@@ -295,7 +299,7 @@ data.tiles.2 <- create_tiles_fixed_length(data, tiles.length = 1000, common = T)
 
 ## 3. Get basic statistics
 
-We got basic statistics about two probes by `get_stats` function. This is helpful if we want check coverage of created regions or methylation difference.
+We get basic statistics about two probes by `get_stats` function. This is helpful if we want check coverage of created regions or methylation difference.
 
 ```{r fig.width=6, fig.height=3, message=F, warning = F}
 stats.3 <- get_stats(data.tiles.3)
@@ -303,7 +307,7 @@ kable_styling(kable(head(stats.3, 3), "html"), position = "left",
 font_size = 9) %>% row_spec(1:3, color = "black") 
 ```
 
-We get basic statisics about each region:
+We get basic statistics about each region:
 
 * minimum and maximum position (start and end columns)
 
@@ -313,7 +317,7 @@ We get basic statisics about each region:
 
 * quantile - rank function based on quantile regression which uses information about number of observations in region.
 
-We also can join e.g stats.3 and data.tiles.3 on chromosome, start and end column and analyzing regions only if they coverage is greater than some specyfic values or other condition.
+We also can join e.g stats.3 and data.tiles.3 on chromosome, start and end column and analyzing regions only if they coverage is greater than some specific values or other condition.
 
 ## 4. Finding DMR
 
@@ -331,7 +335,7 @@ data('find.DMR.results')
 names(find.DMR.results)
 ```
 
-This is a list of data.frames. One data.frame is result of running specyfic methods.
+This is a list of data.frames. One data.frame is result of running specific methods.
 
 If we want also get results from sorting by beta coefficient we can run:
 
@@ -415,7 +419,7 @@ draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = T,smo
         axis.text.x = 9, axis.text.y = 9)
 ```
 
-Other arguments are resposible for size of element on plots.
+Other arguments are responsible for size of element on plots.
 
 
 

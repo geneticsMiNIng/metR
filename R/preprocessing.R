@@ -15,6 +15,7 @@
 #'  dplyr::select(-category)
 #'
 #' data <- preprocessing(control, disease)
+#' head(data)
 
 
 preprocessing <- function(sample.1, sample.2){

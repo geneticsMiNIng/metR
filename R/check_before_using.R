@@ -1,6 +1,6 @@
 #' Check datasets and functions in metR
 #'
-#' Check if all neccesary datasets and functions are in metR
+#' Check if all necessary datasets and functions are in metR
 #' @return If all datasets and function are in metR then functions returns message:
 #' 'OK! All functions and datasets are complet in metR package'. Otherwise function is stopped with message why.
 #' @export

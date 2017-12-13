@@ -7,19 +7,19 @@
 create_tiles_fixed_length(data, tiles.length, common = FALSE)
 }
 \arguments{
-\item{data}{dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.}
+\item{data}{dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.}
 
-\item{tiles.length}{integer number that specifes maximum difference between minimum and maximum position in the same methylation regions}
+\item{tiles.length}{integer number that specifies maximum difference between minimum and maximum position in the same methylation regions.
+k-region in chromosome are observations for which position is between [k * tiles.length;(k + 1)* tiles.length -1]}
 
-\item{common}{logi value. If TRUE this function creates second regions group that are min postion is (min postion + max position)/2 of k-region and
-max position is (min position + max position) of k+1 region.}
+\item{common}{logi value. If TRUE this function creates second regions group that k-region in chromosome are observations for which position is between [ k * tiles.length + tiles.length/2 ; (k + 1)* tiles.length -1 + tiles.length/2]}
 }
 \value{
 data.frame from parameter data with extra column tiles that is region id number within chromosomes and extra column
 tiles.common if argument tiles.common is not null
 }
 \description{
-The same regions are observations that maximum difference position is gaps.length argument
+The same regions are observations where maximum difference between minimum and maximum position is tiles.length argument.
 }
 \examples{
 data('schizophrenia')

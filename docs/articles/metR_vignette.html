@@ -72,7 +72,7 @@
       <h1>Introduction to metR</h1>
                         <h4 class="author">Aleksandra Brodecka, Przemysław Biecek</h4>
             
-            <h4 class="date">2017-12-05</h4>
+            <h4 class="date">2017-12-12</h4>
           </div>
 
     
@@ -81,14 +81,14 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p><code>metR</code> package allows comprehensive data analysis from methylation studies. By <code>metR</code> we can create regions, get basic statistics about them, plot methylation rate or arrange created regions from the most interesing by diffrent methods.</p>
+<p><code>metR</code> package allows comprehensive data analysis from methylation studies. By <code>metR</code> we can create regions, get basic statistics about them, plot methylation rate or arrange created regions from the most interesting by different methods.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"geneticsMiNIng/metR"</span>)
 <span class="kw">library</span>(metR)
 
 <span class="co"># useful for printing tables</span>
 <span class="kw">library</span>(kableExtra)
 <span class="kw">library</span>(knitr)</code></pre></div>
-<p>Initially we check if <code>metR</code> package includes all neccesary datasets and functions:</p>
+<p>Initially we check if <code>metR</code> package includes all necessary datasets and functions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/check_before_using.html">check_before_using</a></span>()</code></pre></div>
 <pre><code>## [1] "OK! All functions and datasets are complet in metR package"</code></pre>
 <p>Ok, so let’s start!</p>
@@ -106,7 +106,7 @@
 <h3 class="hasAnchor">
 <a href="#region-with-maximum-coverage" class="anchor"></a>1. Region with maximum coverage</h3>
 <p>This region has the largest coverage from interesting areas. We have 394 observations. This region hasn’t huge methylation diff in two samples but this difference is stable along the entire length.</p>
-<img src="metR_vignette_files/figure-html/unnamed-chunk-6-1.png" width="720"><table class="table" style="font-size: 9px; ">
+<img src="metR_vignette_files/figure-html/unnamed-chunk-6-1.png" width="720"><table class="table" style="font-size: 11px; ">
 <thead><tr>
 <th style="text-align:left;">
 chr
@@ -131,27 +131,6 @@ meth.mean_x
 </th>
 <th style="text-align:right;">
 meth.mean_y
-</th>
-<th style="text-align:right;">
-meth.min_x
-</th>
-<th style="text-align:right;">
-meth.min_y
-</th>
-<th style="text-align:right;">
-meth.sd_x
-</th>
-<th style="text-align:right;">
-meth.sd_y
-</th>
-<th style="text-align:right;">
-meth.diff
-</th>
-<th style="text-align:right;">
-quantile
-</th>
-<th style="text-align:left;">
-source
 </th>
 </tr></thead>
 <tbody><tr>
@@ -179,6 +158,33 @@ chr1
 <td style="text-align:right;color: black;">
 0.01
 </td>
+</tr></tbody>
+</table>
+<table class="table" style="font-size: 11px; ">
+<thead><tr>
+<th style="text-align:right;">
+meth.min_x
+</th>
+<th style="text-align:right;">
+meth.min_y
+</th>
+<th style="text-align:right;">
+meth.sd_x
+</th>
+<th style="text-align:right;">
+meth.sd_y
+</th>
+<th style="text-align:right;">
+meth.diff
+</th>
+<th style="text-align:right;">
+quantile
+</th>
+<th style="text-align:left;">
+source
+</th>
+</tr></thead>
+<tbody><tr>
 <td style="text-align:right;color: black;">
 0.06
 </td>
@@ -207,7 +213,7 @@ Wilcoxon
 <h3 class="hasAnchor">
 <a href="#region-with-maximum-mean-of-methylation-rate-in-control-sample" class="anchor"></a>2. Region with maximum mean of methylation rate in control sample</h3>
 <p>This region has the largest mean of methylation rate in control sample from interesting areas. We have 104 observations and mean of methylation rate is equal 1. This means that all of 104 observations have methylation rate on the level 1!</p>
-<img src="metR_vignette_files/figure-html/unnamed-chunk-7-1.png" width="720"><table class="table" style="font-size: 9px; ">
+<img src="metR_vignette_files/figure-html/unnamed-chunk-7-1.png" width="720"><table class="table" style="font-size: 11px; ">
 <thead><tr>
 <th style="text-align:left;">
 chr
@@ -232,27 +238,6 @@ meth.mean_x
 </th>
 <th style="text-align:right;">
 meth.mean_y
-</th>
-<th style="text-align:right;">
-meth.min_x
-</th>
-<th style="text-align:right;">
-meth.min_y
-</th>
-<th style="text-align:right;">
-meth.sd_x
-</th>
-<th style="text-align:right;">
-meth.sd_y
-</th>
-<th style="text-align:right;">
-meth.diff
-</th>
-<th style="text-align:right;">
-quantile
-</th>
-<th style="text-align:left;">
-source
 </th>
 </tr></thead>
 <tbody><tr>
@@ -280,6 +265,33 @@ chr1
 <td style="text-align:right;color: black;">
 0.79
 </td>
+</tr></tbody>
+</table>
+<table class="table" style="font-size: 11px; ">
+<thead><tr>
+<th style="text-align:right;">
+meth.min_x
+</th>
+<th style="text-align:right;">
+meth.min_y
+</th>
+<th style="text-align:right;">
+meth.sd_x
+</th>
+<th style="text-align:right;">
+meth.sd_y
+</th>
+<th style="text-align:right;">
+meth.diff
+</th>
+<th style="text-align:right;">
+quantile
+</th>
+<th style="text-align:left;">
+source
+</th>
+</tr></thead>
+<tbody><tr>
 <td style="text-align:right;color: black;">
 1
 </td>
@@ -309,7 +321,7 @@ Ttest
 <a href="#region-with-minimum-mean-of-methylation-rate-in-disease-sample" class="anchor"></a>3. Region with minimum mean of methylation rate in disease sample</h3>
 <p>This region has the smallest mean of methylation rate in disease sample from interesting areas. We have 210 observations and mean of methylation rate is equal 0. This means that all of 210 observations have methylation rate on the level 0!</p>
 <p>This is reverse example to the previous one.</p>
-<img src="metR_vignette_files/figure-html/unnamed-chunk-8-1.png" width="720"><table class="table" style="font-size: 9px; ">
+<img src="metR_vignette_files/figure-html/unnamed-chunk-8-1.png" width="720"><table class="table" style="font-size: 11px; ">
 <thead><tr>
 <th style="text-align:left;">
 chr
@@ -334,27 +346,6 @@ meth.mean_x
 </th>
 <th style="text-align:right;">
 meth.mean_y
-</th>
-<th style="text-align:right;">
-meth.min_x
-</th>
-<th style="text-align:right;">
-meth.min_y
-</th>
-<th style="text-align:right;">
-meth.sd_x
-</th>
-<th style="text-align:right;">
-meth.sd_y
-</th>
-<th style="text-align:right;">
-meth.diff
-</th>
-<th style="text-align:right;">
-quantile
-</th>
-<th style="text-align:left;">
-source
 </th>
 </tr></thead>
 <tbody><tr>
@@ -382,6 +373,33 @@ chr1
 <td style="text-align:right;color: black;">
 0
 </td>
+</tr></tbody>
+</table>
+<table class="table" style="font-size: 11px; ">
+<thead><tr>
+<th style="text-align:right;">
+meth.min_x
+</th>
+<th style="text-align:right;">
+meth.min_y
+</th>
+<th style="text-align:right;">
+meth.sd_x
+</th>
+<th style="text-align:right;">
+meth.sd_y
+</th>
+<th style="text-align:right;">
+meth.diff
+</th>
+<th style="text-align:right;">
+quantile
+</th>
+<th style="text-align:left;">
+source
+</th>
+</tr></thead>
+<tbody><tr>
 <td style="text-align:right;color: black;">
 0.05
 </td>
@@ -409,8 +427,8 @@ Wilcoxon
 <div id="region-with-maximum-standard-deviation-of-methylation-rate-in-control-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#region-with-maximum-standard-deviation-of-methylation-rate-in-control-sample" class="anchor"></a>4. Region with maximum standard deviation of methylation rate in control sample</h3>
-<p>We see very interesing regions below. In this example methylation rate start from 0 in both sample and increase to 1 in control sample and 0.75 in disease sample.</p>
-<img src="metR_vignette_files/figure-html/unnamed-chunk-9-1.png" width="720"><table class="table" style="font-size: 9px; ">
+<p>We see very interesting regions below. In this example methylation rate start from 0 in both sample and increase to 1 in control sample and 0.75 in disease sample.</p>
+<img src="metR_vignette_files/figure-html/unnamed-chunk-9-1.png" width="720"><table class="table" style="font-size: 11px; ">
 <thead><tr>
 <th style="text-align:left;">
 chr
@@ -435,27 +453,6 @@ meth.mean_x
 </th>
 <th style="text-align:right;">
 meth.mean_y
-</th>
-<th style="text-align:right;">
-meth.min_x
-</th>
-<th style="text-align:right;">
-meth.min_y
-</th>
-<th style="text-align:right;">
-meth.sd_x
-</th>
-<th style="text-align:right;">
-meth.sd_y
-</th>
-<th style="text-align:right;">
-meth.diff
-</th>
-<th style="text-align:right;">
-quantile
-</th>
-<th style="text-align:left;">
-source
 </th>
 </tr></thead>
 <tbody><tr>
@@ -483,6 +480,33 @@ chr1
 <td style="text-align:right;color: black;">
 0.36
 </td>
+</tr></tbody>
+</table>
+<table class="table" style="font-size: 11px; ">
+<thead><tr>
+<th style="text-align:right;">
+meth.min_x
+</th>
+<th style="text-align:right;">
+meth.min_y
+</th>
+<th style="text-align:right;">
+meth.sd_x
+</th>
+<th style="text-align:right;">
+meth.sd_y
+</th>
+<th style="text-align:right;">
+meth.diff
+</th>
+<th style="text-align:right;">
+quantile
+</th>
+<th style="text-align:left;">
+source
+</th>
+</tr></thead>
+<tbody><tr>
 <td style="text-align:right;color: black;">
 0
 </td>
@@ -511,7 +535,7 @@ Reg.Log
 <h3 class="hasAnchor">
 <a href="#region-with-maximum-methylation-difference-in-two-probes" class="anchor"></a>5. Region with maximum methylation difference in two probes</h3>
 <p>This area has only two observations but methylation difference between them is huge and equal 0.7.</p>
-<img src="metR_vignette_files/figure-html/unnamed-chunk-10-1.png" width="720"><table class="table" style="font-size: 9px; ">
+<img src="metR_vignette_files/figure-html/unnamed-chunk-10-1.png" width="720"><table class="table" style="font-size: 11px; ">
 <thead><tr>
 <th style="text-align:left;">
 chr
@@ -536,27 +560,6 @@ meth.mean_x
 </th>
 <th style="text-align:right;">
 meth.mean_y
-</th>
-<th style="text-align:right;">
-meth.min_x
-</th>
-<th style="text-align:right;">
-meth.min_y
-</th>
-<th style="text-align:right;">
-meth.sd_x
-</th>
-<th style="text-align:right;">
-meth.sd_y
-</th>
-<th style="text-align:right;">
-meth.diff
-</th>
-<th style="text-align:right;">
-quantile
-</th>
-<th style="text-align:left;">
-source
 </th>
 </tr></thead>
 <tbody><tr>
@@ -584,6 +587,33 @@ chr1
 <td style="text-align:right;color: black;">
 0.11
 </td>
+</tr></tbody>
+</table>
+<table class="table" style="font-size: 11px; ">
+<thead><tr>
+<th style="text-align:right;">
+meth.min_x
+</th>
+<th style="text-align:right;">
+meth.min_y
+</th>
+<th style="text-align:right;">
+meth.sd_x
+</th>
+<th style="text-align:right;">
+meth.sd_y
+</th>
+<th style="text-align:right;">
+meth.diff
+</th>
+<th style="text-align:right;">
+quantile
+</th>
+<th style="text-align:left;">
+source
+</th>
+</tr></thead>
+<tbody><tr>
 <td style="text-align:right;color: black;">
 0.78
 </td>
@@ -612,7 +642,7 @@ Reg.Mixed.Beta
 <h3 class="hasAnchor">
 <a href="#region-with-maximum-rank-function" class="anchor"></a>6. Region with maximum rank function</h3>
 <p>This area has maximum rank function. Rank function is based on quantile regression which uses information about number of observations in region. In this example methylation difference between probes is the biggest with respect to number of observations. Methylation difference is close to methylation difference in previous example but has more observation (11 to 2).</p>
-<img src="metR_vignette_files/figure-html/unnamed-chunk-11-1.png" width="720"><table class="table" style="font-size: 9px; ">
+<img src="metR_vignette_files/figure-html/unnamed-chunk-11-1.png" width="720"><table class="table" style="font-size: 11px; ">
 <thead><tr>
 <th style="text-align:left;">
 chr
@@ -637,27 +667,6 @@ meth.mean_x
 </th>
 <th style="text-align:right;">
 meth.mean_y
-</th>
-<th style="text-align:right;">
-meth.min_x
-</th>
-<th style="text-align:right;">
-meth.min_y
-</th>
-<th style="text-align:right;">
-meth.sd_x
-</th>
-<th style="text-align:right;">
-meth.sd_y
-</th>
-<th style="text-align:right;">
-meth.diff
-</th>
-<th style="text-align:right;">
-quantile
-</th>
-<th style="text-align:left;">
-source
 </th>
 </tr></thead>
 <tbody><tr>
@@ -685,6 +694,33 @@ chr1
 <td style="text-align:right;color: black;">
 0.31
 </td>
+</tr></tbody>
+</table>
+<table class="table" style="font-size: 11px; ">
+<thead><tr>
+<th style="text-align:right;">
+meth.min_x
+</th>
+<th style="text-align:right;">
+meth.min_y
+</th>
+<th style="text-align:right;">
+meth.sd_x
+</th>
+<th style="text-align:right;">
+meth.sd_y
+</th>
+<th style="text-align:right;">
+meth.diff
+</th>
+<th style="text-align:right;">
+quantile
+</th>
+<th style="text-align:left;">
+source
+</th>
+</tr></thead>
+<tbody><tr>
 <td style="text-align:right;color: black;">
 0.93
 </td>
@@ -712,8 +748,8 @@ Reg.Log.Beta
 <div id="region-with-maximum-methylation-range-in-control-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#region-with-maximum-methylation-range-in-control-sample" class="anchor"></a>7. Region with maximum methylation range in control sample</h3>
-<p>This region has the biggest methylation range in control sample from interesting areas. We see that methylation rate in control sample starts from 1 and decreases to 0. In disease sample methylation rate starts from level 0.9 and deacreases to 0.15. Curious observations is occuurance that at the beginning of region we see bigger methylation in control sample and at the end of region reverse case.</p>
-<img src="metR_vignette_files/figure-html/unnamed-chunk-12-1.png" width="720"><table class="table" style="font-size: 9px; ">
+<p>This region has the biggest methylation range in control sample from interesting areas. We see that methylation rate in control sample starts from 1 and decreases to 0. In disease sample methylation rate starts from level 0.9 and decreases to 0.15. Curious observations is occurence that at the beginning of region we see bigger methylation in control sample and at the end of region reverse case.</p>
+<img src="metR_vignette_files/figure-html/unnamed-chunk-12-1.png" width="720"><table class="table" style="font-size: 11px; ">
 <thead><tr>
 <th style="text-align:left;">
 chr
@@ -738,27 +774,6 @@ meth.mean_x
 </th>
 <th style="text-align:right;">
 meth.mean_y
-</th>
-<th style="text-align:right;">
-meth.min_x
-</th>
-<th style="text-align:right;">
-meth.min_y
-</th>
-<th style="text-align:right;">
-meth.sd_x
-</th>
-<th style="text-align:right;">
-meth.sd_y
-</th>
-<th style="text-align:right;">
-meth.diff
-</th>
-<th style="text-align:right;">
-quantile
-</th>
-<th style="text-align:left;">
-source
 </th>
 </tr></thead>
 <tbody><tr>
@@ -786,6 +801,33 @@ chr1
 <td style="text-align:right;color: black;">
 0.25
 </td>
+</tr></tbody>
+</table>
+<table class="table" style="font-size: 11px; ">
+<thead><tr>
+<th style="text-align:right;">
+meth.min_x
+</th>
+<th style="text-align:right;">
+meth.min_y
+</th>
+<th style="text-align:right;">
+meth.sd_x
+</th>
+<th style="text-align:right;">
+meth.sd_y
+</th>
+<th style="text-align:right;">
+meth.diff
+</th>
+<th style="text-align:right;">
+quantile
+</th>
+<th style="text-align:left;">
+source
+</th>
+</tr></thead>
+<tbody><tr>
 <td style="text-align:right;color: black;">
 0
 </td>
@@ -814,7 +856,7 @@ Wilcoxon
 <h3 class="hasAnchor">
 <a href="#region-with-maximum-methylation-range-in-disease-sample" class="anchor"></a>8. Region with maximum methylation range in disease sample</h3>
 <p>This region has the biggest methylation range in disease sample from interesting areas. In the middle of region we can notice that methylation rate in disease sample is equal to 0 and in control is around 0.25. At the beginning and at the end of regions methylation increases in two probes.</p>
-<img src="metR_vignette_files/figure-html/unnamed-chunk-13-1.png" width="720"><table class="table" style="font-size: 9px; ">
+<img src="metR_vignette_files/figure-html/unnamed-chunk-13-1.png" width="720"><table class="table" style="font-size: 11px; ">
 <thead><tr>
 <th style="text-align:left;">
 chr
@@ -839,27 +881,6 @@ meth.mean_x
 </th>
 <th style="text-align:right;">
 meth.mean_y
-</th>
-<th style="text-align:right;">
-meth.min_x
-</th>
-<th style="text-align:right;">
-meth.min_y
-</th>
-<th style="text-align:right;">
-meth.sd_x
-</th>
-<th style="text-align:right;">
-meth.sd_y
-</th>
-<th style="text-align:right;">
-meth.diff
-</th>
-<th style="text-align:right;">
-quantile
-</th>
-<th style="text-align:left;">
-source
 </th>
 </tr></thead>
 <tbody><tr>
@@ -887,6 +908,33 @@ chr1
 <td style="text-align:right;color: black;">
 0.06
 </td>
+</tr></tbody>
+</table>
+<table class="table" style="font-size: 11px; ">
+<thead><tr>
+<th style="text-align:right;">
+meth.min_x
+</th>
+<th style="text-align:right;">
+meth.min_y
+</th>
+<th style="text-align:right;">
+meth.sd_x
+</th>
+<th style="text-align:right;">
+meth.sd_y
+</th>
+<th style="text-align:right;">
+meth.diff
+</th>
+<th style="text-align:right;">
+quantile
+</th>
+<th style="text-align:left;">
+source
+</th>
+</tr></thead>
+<tbody><tr>
 <td style="text-align:right;color: black;">
 0.24
 </td>
@@ -921,7 +969,7 @@ Wilcoxon
 <li><p>Wilcoxon - Wilcoxon test on methylation.rate</p></li>
 <li><p>KS - Kolmogorov-Smirnov test on methylation.rate</p></li>
 </ul>
-<p>Regression methods, where number of succsess are number of methylated citosines :</p>
+<p>Regression methods, where number of success are number of methylated citosines :</p>
 <ul>
 <li><p>Reg.Log - standard logistic regression</p></li>
 <li><p>Reg.Mixed - logistic regression where random effects are positions of chromosome</p></li>
@@ -948,7 +996,7 @@ control &lt;-<span class="st"> </span>schizophrenia %&gt;%<span class="st"> </sp
 
 disease &lt;-<span class="st"> </span>schizophrenia %&gt;%<span class="st"> </span><span class="kw">filter</span>(category ==<span class="st"> 'disease'</span>) %&gt;%
 <span class="st">  </span>dplyr::<span class="kw">select</span>(-category)</code></pre></div>
-<p><code>preprocessing</code> function need two probes with specyfic columns:</p>
+<p><code>preprocessing</code> function need two probes with specific columns:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/kableExtra/topics/kable_styling">kable_styling</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw">head</span>(control, <span class="dv">3</span>), <span class="st">"html"</span>), <span class="dt">position =</span> <span class="st">"left"</span>,
 <span class="dt">font_size =</span> <span class="dv">9</span>, <span class="dt">full_width =</span> F) %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/kableExtra/topics/row_spec">row_spec</a></span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">color =</span> <span class="st">"black"</span>)</code></pre></div>
 <table class="table" style="font-size: 9px; width: auto !important; ">
@@ -1275,14 +1323,14 @@ x
 </tr>
 </tbody>
 </table>
-<p>It’s also possible to use <code>create_tiles_fixed_length function</code>, where the same regions are observations that maximum difference position is <code>gaps.length</code> argument. If <code>common = TRUE</code> function creates second regions group that are min postion is (min postion + max position)/2 of k-region and max position is (min position + max position) of k+1 region.</p>
+<p>It’s also possible to use <code>create_tiles_fixed_length function</code>, where <code>tiles.length</code> that specifies maximum difference between minimum and maximum position in the same methylation regions. If <code>common = TRUE</code> function creates second regions group that are min position is (min position + max position)/2 of k-region and max position is (min position + max position) of k+1 region.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data.tiles<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_tiles_fixed_length.html">create_tiles_fixed_length</a></span>(data, <span class="dt">tiles.length =</span> <span class="dv">1000</span>, <span class="dt">common =</span> F)
 data.tiles<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_tiles_fixed_length.html">create_tiles_fixed_length</a></span>(data, <span class="dt">tiles.length =</span> <span class="dv">1000</span>, <span class="dt">common =</span> T)</code></pre></div>
 </div>
 <div id="get-basic-statistics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#get-basic-statistics" class="anchor"></a>3. Get basic statistics</h2>
-<p>We got basic statistics about two probes by <code>get_stats</code> function. This is helpful if we want check coverage of created regions or methylation difference.</p>
+<p>We get basic statistics about two probes by <code>get_stats</code> function. This is helpful if we want check coverage of created regions or methylation difference.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stats<span class="fl">.3</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_stats.html">get_stats</a></span>(data.tiles<span class="fl">.3</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/kableExtra/topics/kable_styling">kable_styling</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw">head</span>(stats<span class="fl">.3</span>, <span class="dv">3</span>), <span class="st">"html"</span>), <span class="dt">position =</span> <span class="st">"left"</span>,
 <span class="dt">font_size =</span> <span class="dv">9</span>) %&gt;%<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/kableExtra/topics/row_spec">row_spec</a></span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dt">color =</span> <span class="st">"black"</span>) </code></pre></div>
@@ -1466,14 +1514,14 @@ chr1
 </tr>
 </tbody>
 </table>
-<p>We get basic statisics about each region:</p>
+<p>We get basic statistics about each region:</p>
 <ul>
 <li><p>minimum and maximum position (start and end columns)</p></li>
 <li><p>min, max, std of methylation.rate in each probe (_x from control sample and _y from disease sample)</p></li>
 <li><p>meth.diff - absolute difference between mean of methylation rate in control and disease sample</p></li>
 <li><p>quantile - rank function based on quantile regression which uses information about number of observations in region.</p></li>
 </ul>
-<p>We also can join e.g stats.3 and data.tiles.3 on chromosome, start and end column and analyzing regions only if they coverage is greater than some specyfic values or other condition.</p>
+<p>We also can join e.g stats.3 and data.tiles.3 on chromosome, start and end column and analyzing regions only if they coverage is greater than some specific values or other condition.</p>
 </div>
 <div id="finding-dmr" class="section level2">
 <h2 class="hasAnchor">
@@ -1486,7 +1534,7 @@ result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/find
 <span class="kw">names</span>(find.DMR.results)</code></pre></div>
 <pre><code>## [1] "Wilcoxon"       "Ttest"          "KS"             "Reg.Log"       
 ## [5] "Reg.Mixed"      "Reg.Corr.Mixed"</code></pre>
-<p>This is a list of data.frames. One data.frame is result of running specyfic methods.</p>
+<p>This is a list of data.frames. One data.frame is result of running specific methods.</p>
 <p>If we want also get results from sorting by beta coefficient we can run:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">find.DMR.results &lt;-<span class="st"> </span><span class="kw"><a href="../reference/find_DMR.html">find_DMR</a></span>(data.tiles<span class="fl">.3</span>, <span class="dt">methods =</span> <span class="kw">c</span>(<span class="st">'Reg.Log'</span>, <span class="st">'Reg.Corr.Mixed'</span>, <span class="st">'Reg.Corr.Mixed'</span>)
                     , <span class="dt">p.value.log.reg =</span> <span class="fl">0.001</span>, <span class="dt">p.value.reg.mixed =</span> <span class="fl">0.001</span>, <span class="dt">p.value.reg.corr.mixed =</span> <span class="fl">0.001</span>)</code></pre></div>
@@ -1541,7 +1589,7 @@ top &lt;-<span class="st"> </span><span class="kw">do.call</span>(gdata::combine
         <span class="dt">size.x.dot =</span> <span class="fl">3.5</span>, <span class="dt">size.y.dot =</span> <span class="dv">2</span>, <span class="dt">plot.title =</span> <span class="dv">13</span>, <span class="dt">axis.title.x =</span> <span class="dv">12</span>, <span class="dt">axis.title.y =</span> <span class="dv">12</span>, <span class="dt">legend.position =</span> <span class="st">'none'</span>,
         <span class="dt">axis.text.x =</span> <span class="dv">9</span>, <span class="dt">axis.text.y =</span> <span class="dv">9</span>)</code></pre></div>
 <p><img src="metR_vignette_files/figure-html/unnamed-chunk-33-1.png" width="720"></p>
-<p>Other arguments are resposible for size of element on plots.</p>
+<p>Other arguments are responsible for size of element on plots.</p>
 </div>
 </div>
 </div>

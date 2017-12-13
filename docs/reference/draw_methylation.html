@@ -110,9 +110,9 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+      <td><p>There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 This dataframe is result of function preprocessing.
-2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 create.tiles.fixed.length.</p></td>
     </tr>
     <tr>
@@ -133,7 +133,7 @@ create.tiles.fixed.length.</p></td>
     </tr>
     <tr>
       <th>chr</th>
-      <td><p>chromosom name of region that are being plotted</p></td>
+      <td><p>chromosome name of region that are being plotted</p></td>
     </tr>
     </table>
     
@@ -151,12 +151,12 @@ create.tiles.fixed.length.</p></td>
  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>category</span>)
 
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='preprocessing.html'>preprocessing</a></span>(<span class='no'>control</span>, <span class='no'>disease</span>)
-<span class='fu'>draw_methylation</span>(<span class='no'>data</span>, <span class='kw'>chr</span> <span class='kw'>=</span> <span class='st'>'chr1'</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>80000</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>100000</span>)</div><div class='img'><img src='draw_methylation-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>draw_methylation</span>(<span class='no'>data</span>, <span class='kw'>chr</span> <span class='kw'>=</span> <span class='st'>'chr1'</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>80000</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>95000</span>)</div><div class='img'><img src='draw_methylation-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'>#without binding lines and smoothing</span>
-<span class='fu'>draw_methylation</span>(<span class='no'>data</span>, <span class='kw'>chr</span> <span class='kw'>=</span> <span class='st'>'chr1'</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>80000</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>100000</span>,
+<span class='fu'>draw_methylation</span>(<span class='no'>data</span>, <span class='kw'>chr</span> <span class='kw'>=</span> <span class='st'>'chr1'</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>80000</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>95000</span>,
 <span class='kw'>bind.probes</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>smooth.methylation</span> <span class='kw'>=</span> <span class='no'>F</span>)</div><div class='img'><img src='draw_methylation-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># with changing some ggplot2 arguments:</span>
-<span class='fu'>draw_methylation</span>(<span class='no'>data</span>, <span class='kw'>chr</span> <span class='kw'>=</span> <span class='st'>'chr1'</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>80000</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>100000</span>, <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+<span class='fu'>draw_methylation</span>(<span class='no'>data</span>, <span class='kw'>chr</span> <span class='kw'>=</span> <span class='st'>'chr1'</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='fl'>80000</span>, <span class='kw'>end</span> <span class='kw'>=</span> <span class='fl'>95000</span>, <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='fl'>20</span>,
 <span class='kw'>legend.position</span> <span class='kw'>=</span> <span class='st'>'bottom'</span>, <span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='fl'>28</span>, <span class='kw'>size.x.dot</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>size.y.dot</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='img'><img src='draw_methylation-3.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

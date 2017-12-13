@@ -7,17 +7,17 @@
 reg_corr_mixed(data, acf)
 }
 \arguments{
-\item{data}{There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+\item{data}{There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 This dataframe is result of function preprocessing.
-2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 create.tiles.fixed.length.}
 }
 \value{
-vecotor with p.value and beta coef. from grouping variable from logistic regression with random effects and given correlation matrix or two-elemented vector of na values if something goes wrong
+vector with p.value and beta coef. from grouping variable from logistic regression with random effects and given correlation matrix or two-elemented vector of na values if something goes wrong
 }
 \description{
 Get p.value and beta coefficient from grouping variable from logistic regression with random effects and given correlation matrix based on number of methylated and unmethylated citozines in two probes.
-This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used sepparately.
+This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used separately.
 }
 \examples{
 data('schizophrenia')
@@ -33,7 +33,7 @@ data.tiles <- create_tiles_max_gap(data, gaps.length = 100)
 # we must also read acf vector which was previously estimated
 data('mean.acf.chr')
 acf <- mean.acf.chr[-1]
-data.test <- data.tiles \%>\% filter(tiles == 1)
+data.test <- data.tiles \%>\% filter(tiles == 10)
 reg_corr_mixed(data.test, acf)
 # or by some self-defined regions:
 data.test.2 <- data.tiles \%>\% filter(chr == 'chr1', poz > 80000, poz < 82000)

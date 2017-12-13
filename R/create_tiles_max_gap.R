@@ -1,8 +1,8 @@
 #' Create regions for testing methylation difference
 #'
 #' The same regions are observations that maximum difference position is gaps.length argument
-#' @param data dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.
-#' @param gaps.length integer number that specifes maximum difference position between the same methylation regions
+#' @param data dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.
+#' @param gaps.length integer number that specifies maximum difference position between the same methylation regions
 #' @return data.frame from parameter data with extra column tiles that is region id number within chromosomes
 #' @export
 #' @examples

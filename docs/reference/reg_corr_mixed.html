@@ -97,7 +97,7 @@
 
     
     <p>Get p.value and beta coefficient from grouping variable from logistic regression with random effects and given correlation matrix based on number of methylated and unmethylated citozines in two probes.
-This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used sepparately.</p>
+This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used separately.</p>
     
 
     <pre class="usage"><span class='fu'>reg_corr_mixed</span>(<span class='no'>data</span>, <span class='no'>acf</span>)</pre>
@@ -107,16 +107,16 @@ This function doesn't respect tiles or tiles.common column. This function is usi
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+      <td><p>There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 This dataframe is result of function preprocessing.
-2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 create.tiles.fixed.length.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>vecotor with p.value and beta coef. from grouping variable from logistic regression with random effects and given correlation matrix or two-elemented vector of na values if something goes wrong</p>
+    <p>vector with p.value and beta coef. from grouping variable from logistic regression with random effects and given correlation matrix or two-elemented vector of na values if something goes wrong</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -133,9 +133,9 @@ create.tiles.fixed.length.</p></td>
 <span class='co'># we must also read acf vector which was previously estimated</span>
 <span class='fu'>data</span>(<span class='st'>'mean.acf.chr'</span>)
 <span class='no'>acf</span> <span class='kw'>&lt;-</span> <span class='no'>mean.acf.chr</span>[-<span class='fl'>1</span>]
-<span class='no'>data.test</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>tiles</span> <span class='kw'>==</span> <span class='fl'>1</span>)
-<span class='fu'>reg_corr_mixed</span>(<span class='no'>data.test</span>, <span class='no'>acf</span>)</div><div class='output co'>#&gt;   p.value beta.coef
-#&gt; 1      NA        NA</div><div class='input'><span class='co'># or by some self-defined regions:</span>
+<span class='no'>data.test</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>tiles</span> <span class='kw'>==</span> <span class='fl'>10</span>)
+<span class='fu'>reg_corr_mixed</span>(<span class='no'>data.test</span>, <span class='no'>acf</span>)</div><div class='output co'>#&gt;     p.value beta.coef
+#&gt; 1 0.1887677  2.694722</div><div class='input'><span class='co'># or by some self-defined regions:</span>
 <span class='no'>data.test.2</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>chr</span> <span class='kw'>==</span> <span class='st'>'chr1'</span>, <span class='no'>poz</span> <span class='kw'>&gt;</span> <span class='fl'>80000</span>, <span class='no'>poz</span> <span class='kw'>&lt;</span> <span class='fl'>82000</span>)
 <span class='fu'>reg_corr_mixed</span>(<span class='no'>data.test.2</span>, <span class='no'>acf</span>)</div><div class='output co'>#&gt;       p.value beta.coef
 #&gt; 1 0.002445309  1.879312</div></pre>

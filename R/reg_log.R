@@ -1,12 +1,12 @@
 #' Logistic regression results for methylation data
 #'
 #' Get p.value and beta coefficient from grouping variable from logistic regression based on number of methylated and unmethylated citozines in two probes.
-#' This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used sepparately.
-#' @param data There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+#' This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used separately.
+#' @param data There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 #' This dataframe is result of function preprocessing.
-#' 2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+#' 2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 #' create.tiles.fixed.length.
-#' @return vecotor with p.value and beta coef. from grouping variable from logistic regression or two-elemented vector of na values if something goes wrong
+#' @return vector with p.value and beta coef. from grouping variable from logistic regression or two-elemented vector of na values if something goes wrong
 #' @export
 #' @examples
 #' data('schizophrenia')

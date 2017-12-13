@@ -8,9 +8,9 @@ find_DMR(data, methods, p.value.log.reg = NULL, p.value.reg.mixed = NULL,
   p.value.reg.corr.mixed = NULL, beta.coef.max = 30)
 }
 \arguments{
-\item{data}{There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+\item{data}{There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 This dataframe is result of function preprocessing.
-2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 create.tiles.fixed.length.}
 
 \item{methods}{vectors with given methods. Possible values are: 'Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed',
@@ -20,7 +20,7 @@ create.tiles.fixed.length.}
 'KS' - Kolmogorov-Smirnov test;
 'Reg.Log' - Wald test of grouping variable from logistic regression;
 'Reg.Mixed' - Wald test of grouping variable from logistic regression with mixed effects;
-'Reg.Corr.Mixed' - Wald test of grouping variable from logistic regression with mixed effect and estimated previuos correlation matrix}
+'Reg.Corr.Mixed' - Wald test of grouping variable from logistic regression with mixed effect and estimated previous correlation matrix}
 
 \item{p.value.log.reg}{if not NULL regions with p.value of prob variable smaller than p.value.log.reg are returned and  decreasingly ordered by absolute value of beta coefficient
 of prob variable otherwise regions ale increasingly ordered by p.value}

@@ -1,11 +1,11 @@
 #' Plot DMR region
 #'
 #' Visualizing DMR region by plotting methylation rate within two probes
-#' @param data There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+#' @param data There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 #' This dataframe is result of function preprocessing.
-#' 2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+#' 2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 #' create.tiles.fixed.length.
-#' @param chr chromosom name of region that are being plotted
+#' @param chr chromosome name of region that are being plotted
 #' @param start minimum position of region that are being plotted
 #' @param end maximum position of region that are being plotted
 #' @param bind.probes if TRUE methylation rates on the same position will be binded by vertical lines
@@ -21,14 +21,14 @@
 #'  dplyr::select(-category)
 #'
 #' data <- preprocessing(control, disease)
-#' draw_methylation(data, chr = 'chr1', start = 80000, end = 100000)
+#' draw_methylation(data, chr = 'chr1', start = 80000, end = 95000)
 #'
 #' #without binding lines and smoothing
-#' draw_methylation(data, chr = 'chr1', start = 80000, end = 100000,
+#' draw_methylation(data, chr = 'chr1', start = 80000, end = 95000,
 #' bind.probes = F, smooth.methylation = F)
 #'
 #' # with changing some ggplot2 arguments:
-#' draw_methylation(data, chr = 'chr1', start = 80000, end = 100000, legend.title = 20,
+#' draw_methylation(data, chr = 'chr1', start = 80000, end = 95000, legend.title = 20,
 #' legend.position = 'bottom', plot.title = 28, size.x.dot = 10, size.y.dot = 4)
 
 

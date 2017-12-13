@@ -11,9 +11,9 @@ draw_methylation(data, chromosom, start, end, bind.probes = T,
   legend.text = 16, legend.title = 18)
 }
 \arguments{
-\item{data}{There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+\item{data}{There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 This dataframe is result of function preprocessing.
-2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 create.tiles.fixed.length.}
 
 \item{start}{minimum position of region that are being plotted}
@@ -24,7 +24,7 @@ create.tiles.fixed.length.}
 
 \item{smooth.methylation}{if TRUE methylation rates in two probes will be smoothed}
 
-\item{chr}{chromosom name of region that are being plotted}
+\item{chr}{chromosome name of region that are being plotted}
 }
 \value{
 ggplot object with visualization of regions
@@ -41,13 +41,13 @@ disease <- schizophrenia \%>\% filter(category == 'disease') \%>\%
  dplyr::select(-category)
 
 data <- preprocessing(control, disease)
-draw_methylation(data, chr = 'chr1', start = 80000, end = 100000)
+draw_methylation(data, chr = 'chr1', start = 80000, end = 95000)
 
 #without binding lines and smoothing
-draw_methylation(data, chr = 'chr1', start = 80000, end = 100000,
+draw_methylation(data, chr = 'chr1', start = 80000, end = 95000,
 bind.probes = F, smooth.methylation = F)
 
 # with changing some ggplot2 arguments:
-draw_methylation(data, chr = 'chr1', start = 80000, end = 100000, legend.title = 20,
+draw_methylation(data, chr = 'chr1', start = 80000, end = 95000, legend.title = 20,
 legend.position = 'bottom', plot.title = 28, size.x.dot = 10, size.y.dot = 4)
 }

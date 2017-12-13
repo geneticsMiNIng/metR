@@ -1,7 +1,7 @@
 #' Summarize regions
 #'
 #' Summarize regions by minimum, maximum, mean, standard deviation of methylation rate in two probes and methylation diff rate withib two probes and estimated quantile basen od methylation diff rate
-#' @param data dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
+#' @param data dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
 #' create_tiles_fixed_length
 #' @return data.frame which is summing-up regions specifed by tiles and tiles.common columns in data
 #' @examples

@@ -1,11 +1,11 @@
 #' t-Stundent test for methylation data
 #'
 #' Get p.value from t-Student with unequal variances based on methylation rate in two probes.
-#' This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used sepparately.
+#' This function doesn't respect tiles or tiles.common column. This function is using in find_DMR and can be used sepparately.
 #' @param data There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 #' This dataframe is result of function preprocessing.
-#' 2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
-#' create.tiles.fixed.length.
+#' 2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
+#' create_tiles_fixed_length.
 #' @return p.value from t-Student test or na values if something goes wrong
 #' @export
 #' @examples

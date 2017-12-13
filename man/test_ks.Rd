@@ -7,17 +7,17 @@
 test_ks(data)
 }
 \arguments{
-\item{data}{There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+\item{data}{There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 This dataframe is result of function preprocessing.
-2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
-create.tiles.fixed.length.}
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create_tiles_min_gap or
+create_tiles_fixed_length.}
 }
 \value{
 p.value from K-S test or na values if something goes wrong
 }
 \description{
 Get p.value from K-S test based on methylation rate in two probes.
-This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used sepparately.
+This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used separately.
 }
 \examples{
 data('schizophrenia')
@@ -32,6 +32,6 @@ data.tiles <- create_tiles_max_gap(data, gaps.length = 100)
 data.test <- data.tiles \%>\% filter(tiles == 10)
 test_ks(data.test)
 # or by some self-defined regions:
-data.test.2 <- data.tiles \%>\% filter(chr == 'chr1', poz > 80000, poz < 10000)
+data.test.2 <- data.tiles \%>\% filter(chr == 'chr1', poz > 80000, poz < 100000)
 test_ks(data.test.2)
 }

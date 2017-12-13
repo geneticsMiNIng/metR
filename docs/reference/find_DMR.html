@@ -108,9 +108,9 @@ logistic regression with mixed models with correlation matrix</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>There are two options:  1. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+      <td><p>There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 This dataframe is result of function preprocessing.
-2. dataframe with specyfic columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
 create.tiles.fixed.length.</p></td>
     </tr>
     <tr>
@@ -122,7 +122,7 @@ create.tiles.fixed.length.</p></td>
 'KS' - Kolmogorov-Smirnov test;
 'Reg.Log' - Wald test of grouping variable from logistic regression;
 'Reg.Mixed' - Wald test of grouping variable from logistic regression with mixed effects;
-'Reg.Corr.Mixed' - Wald test of grouping variable from logistic regression with mixed effect and estimated previuos correlation matrix</p></td>
+'Reg.Corr.Mixed' - Wald test of grouping variable from logistic regression with mixed effect and estimated previous correlation matrix</p></td>
     </tr>
     <tr>
       <th>p.value.log.reg</th>
@@ -169,7 +169,7 @@ did not convergence well</p></td>
 #&gt; [1] "Started: Finding DMR by KS test"
 #&gt; [1] "Started: Finding DMR by Logistic Regression"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
-#&gt; |=======                                               | 14% ~14 s remaining    |==============                                        | 28% ~7 s remaining     |================                                      | 31% ~6 s remaining     |==================                                    | 34% ~5 s remaining     |======================                                | 41% ~4 s remaining     |===========================                           | 52% ~3 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
+#&gt; |================                                      | 31% ~4 s remaining     |==================                                    | 34% ~4 s remaining     |======================                                | 41% ~3 s remaining     |=============================                         | 55% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~0 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
 #&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Wilcoxon
 #&gt; # A tibble: 29 x 4
 #&gt;      chr  start    end    p.value
@@ -281,7 +281,7 @@ did not convergence well</p></td>
 <span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>p.value.reg.mixed</span> <span class='kw'>=</span> <span class='fl'>0.02</span>, <span class='kw'>p.value.reg.corr.mixed</span><span class='kw'>=</span><span class='fl'>0.03</span>)</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Logistic Regression"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
-#&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~0 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Reg.Log
+#&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Reg.Log
 #&gt; # A tibble: 5 x 5
 #&gt;     chr start   end      p.value beta.coef
 #&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
