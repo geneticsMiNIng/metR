@@ -15,5 +15,6 @@ Depends:
 URL: https://github.com/geneticsMiNIng/metR
 RoxygenNote: 6.0.1.9000
 Suggests: knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr

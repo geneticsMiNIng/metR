@@ -1,8 +1,11 @@
 #' Check datasets and functions in metR
 #'
+#' PBI: this function should be converted as a test with test_that
+#' PBI: read https://pbiecek.gitbooks.io/przewodnik/content/Programowanie/pakiety/nowe_testy.html for further instructions
+#'
 #' Check if all necessary datasets and functions are in metR
 #' @return If all datasets and function are in metR then functions returns message:
-#' 'OK! All functions and datasets are complet in metR package'. Otherwise function is stopped with message why.
+#' 'OK! All required functions and datasets are available in the metR package'. Otherwise function is stopped with message why.
 #' @export
 #' @examples
 #' check_before_using()
@@ -58,6 +61,6 @@ if(!all(sapply(metR_functions, exists, mode='function')) == TRUE)
 if(!all(sapply(metR_datasets, exists, mode='any')) == TRUE)
   stop("Error: Some datasets are lacking in metR package!")
 
-return('OK! All functions and datasets are complet in metR package')
+return('OK! All required functions and datasets are available in the metR package')
 }
 
