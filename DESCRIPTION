@@ -1,12 +1,15 @@
 Package: metR
 Type: Package
-Title: Tools for Identification of Differentially Methylated Regions
+Title: Tools for Identification and Visualisation of Differentially Methylated Regions
 Version: 0.1.0
 Authors@R: c(
     person("Aleksandra", "Brodecka", email = "aleksandrabrodecka@gmail.com", role = c("aut", "cre")),
     person("Przemyslaw", "Biecek", email = "przemyslaw.biecek@gmail.com", role = c("aut","ths"))
     )
-Description: Set of statistical test for identification of Differentially Methylated Regions.  Visualisation of differnces in identified regions. And validation of sensitivity of these tools.
+Description: Set of statistical tests for identification and visualisation 
+  of Differentially Methylated Regions. Along with a battery of statistical 
+  tests you will find here functions for ggplotting of identified regions 
+  and validation of power and sensitivity of different packages.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
