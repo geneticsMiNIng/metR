@@ -1,0 +1,270 @@
+---
+title: "metR: step by step"
+author: "Aleksandra Brodecka"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: simplex
+    toc: true
+    toc_depth: 3
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{metR_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+The `metR` package contains tools for comprehensive analysis of data from methylation studies. With the `metR` one can define regions, get basic statistics about methylation in them, plot methylation rate or rank these regions from the most interesting to the least one. 
+
+
+```{r, eval = F}
+devtools::install_github("geneticsMiNIng/metR")
+library(metR)
+library(kableExtra)
+library(knitr)
+```
+
+```{r, include=FALSE}
+library(metR)
+library(kableExtra)
+library(knitr)
+```
+
+# The data
+
+Data for this example are downloaded from the site: http://www.neuroepigenomics.org/methylomedb/download.html. We used 4 control samples: Control1 AC, Control2 AC, Control3 AC and Control4 AC and 4 disease samples: SCZ1 AC, SCZ2 AC, SCZ3 AC, SCZ4 AC. 
+
+
+In the `metR` package these samples are available in the `schizophrenia` data frame. Each row is a single methylation probe. Data from all control/disease samples are combined together. 
+
+To speed up calculations and shrink down the size of data we are using only probes from chromosome 1. The R code needed to download data from all samples can be found in the script https://github.com/geneticsMiNIng/metR/blob/master/examples/prep.MethylomeDB.R. The result of this script is a single data.frame `schizophrenia` that is included in metR package. The last column `category` indicates if data are from control samples ('control') or from disease samples ('disease').
+
+
+```{r fig.width=7.5, fig.height=2.5}
+data('schizophrenia')
+head(schizophrenia)
+```
+
+## 1. Preprocessing
+
+The data requires some preprocessing. This can be done with the `preprocessing()` function.
+
+PBI: TODO: Here you should add more details what is happening inside this function.
+
+```{r}
+control <- schizophrenia[which(schizophrenia$category == 'control'), 1:6] 
+disease <- schizophrenia[which(schizophrenia$category == 'disease'), 1:6] 
+processed_schizophrenia <- preprocessing(control, disease)
+head(processed_schizophrenia)
+```
+
+The `preprocessing()` function need two probes with specific columns:
+
+```{r}
+kable_styling(kable(head(control, 3), "html"), position = "left",
+font_size = 9, full_width = F) %>% row_spec(1:3, color = "black")
+```
+
+So:
+
+* chr - chromosome name
+
+* poz - position in chromosome
+
+* no - number of reads per position
+
+* meth - number of reads with methylated cytosine
+
+* unmeth - number of reads with unmethylated cytosine
+
+* meth.rate - ratio: meth/(meth + unmeth)
+
+```{r, eval = F}
+data <- preprocessing(control, disease)
+```
+
+```{r}
+kable_styling(kable(head(data, 3), "html"), position = "left",
+font_size = 9, full_width = F) %>% row_spec(1:3, color = "black") %>%
+  column_spec(3, background = "#f21a1a", color = 'white')
+```
+
+
+By `preprocessing` we get one data frame where we have both results of methylation in position and chromosome from control and disease samples. Prob columns indicates if data are from control samples (x), or from disease samples (y).
+
+# Tiles / regions
+
+All statistics in the metR package are calculated for regions of DNA. Currently the `metR` package implements two functions that defines regions:
+
+* `create_tiles_max_gap()` creates list of regions rich in methylation probes. Regions are defined as probes spaced not farther than `gaps.length`,
+* `create_tiles_fixed_length()` creates list of regions of fixed length `tiles.length`.
+
+```{r}
+tiles_schizophrenia <- create_tiles_max_gap(processed_schizophrenia, gaps.length = 100)
+head(tiles_schizophrenia)
+```
+
+
+After preprocessing we can create region. After creation they will be tested if there is significant difference between two probes in methylation rate.
+
+We use function `create_tiles_max_gap` with argument `gaps.length = 100`. The same regions are observations that maximum difference position is gaps.length argument.
+
+```{r eval = T}
+data.tiles.3 <- create_tiles_max_gap(data, gaps.length = 100)
+```
+
+Column tiles indicates id of region in chromosome:
+
+```{r}
+kable_styling(kable(head(data.tiles.3, 3), "html"), position = "left",
+font_size = 9, full_width = F) %>% row_spec(1:3, color = "black")  %>%
+  column_spec(9, background = "#f21a1a", color = 'white')
+```
+
+It's also possible to use `create_tiles_fixed_length function`, where `tiles.length` that specifies maximum difference between minimum and maximum position in the same methylation regions. If `common = TRUE` function creates second regions group that are min position is (min position + max position)/2 of k-region and max position is (min position + max position) of k+1 region.
+
+```{r, eval = F}
+data.tiles.1 <- create_tiles_fixed_length(data, tiles.length = 1000, common = F)
+data.tiles.2 <- create_tiles_fixed_length(data, tiles.length = 1000, common = T)
+```
+
+## 3. Get basic statistics
+
+We get basic statistics about two probes by `get_stats` function. This is helpful if we want check coverage of created regions or methylation difference.
+
+```{r fig.width=6, fig.height=3, message=F, warning = F}
+stats.3 <- get_stats(data.tiles.3)
+kable_styling(kable(head(stats.3, 3), "html"), position = "left",
+font_size = 9) %>% row_spec(1:3, color = "black") 
+```
+
+We get basic statistics about each region:
+
+* minimum and maximum position (start and end columns)
+
+* min, max, std of methylation.rate in each probe (_x from control sample and _y from disease sample)
+
+* meth.diff - absolute difference between mean of methylation rate in control and disease sample
+
+* quantile - rank function based on quantile regression which uses information about number of observations in region.
+
+We also can join e.g stats.3 and data.tiles.3 on chromosome, start and end column and analyzing regions only if they coverage is greater than some specific values or other condition.
+
+## 4. Finding DMR
+
+We get interesting regions by using `find_DMR` function. `Data` argument is data.frame from `create_tiles function`. In methods argument we can type methods which we want to use.
+
+```{r, eval = F}
+# eval = F
+result <- find_DMR(data.tiles.3, methods = c('Wilcoxon', 'Ttest', 'KS', 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'))
+```
+
+Results of running function above are included in package. So now we only load data:
+
+```{r}
+data('find.DMR.results')
+names(find.DMR.results)
+```
+
+This is a list of data.frames. One data.frame is result of running specific methods.
+
+If we want also get results from sorting by beta coefficient we can run:
+
+```{r eval = F}
+find.DMR.results <- find_DMR(data.tiles.3, methods = c('Reg.Log', 'Reg.Corr.Mixed', 'Reg.Corr.Mixed')
+                    , p.value.log.reg = 0.001, p.value.reg.mixed = 0.001, p.value.reg.corr.mixed = 0.001)
+```
+
+It's better when we use results previously obtained from sorting by p.value of grouping variable because we can spare computing time:
+
+```{r}
+find.DMR.results$Reg.Log.Beta <- find.DMR.results$Reg.Log %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+
+find.DMR.results$Reg.Mixed.Beta <- find.DMR.results$Reg.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+
+find.DMR.results$Reg.Corr.Mixed.Beta <- find.DMR.results$Reg.Corr.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+```
+
+Now we can select top 100 regions by each method:
+
+```{r eval = F}
+get_top <- function(data, n, stats){
+  data %>% slice(1:n) %>%
+    left_join(stats, by = c('chr', 'start', 'end')) %>%
+    dplyr::select(chr, start, end, meth.cov, meth.max_x, meth.max_y  
+                  ,meth.mean_x, meth.mean_y, meth.min_x,
+                  meth.min_y, meth.sd_x, meth.sd_y, meth.diff,quantile)
+}
+
+
+top <- do.call(gdata::combine,lapply(find.DMR.results, get_top, n = 100, stats = stats.3))
+
+```
+
+In subsection 'Comparing all methods' data from `top` were plotted.
+
+## 4. Plotting methylation
+
+Region in this subsection was plotted in Examples of differentially methylated regions above.
+
+We use `draw_methylation` function with basic arguments: 
+
+* data - data.frame from `preprocessing` function or data.frame from `create_tiles_max_gap` or `create_tiles_fixed_length` functions
+
+* chr - chromosome name of region that will be plotted
+
+* start - min position of region that will be plotted
+
+* end - max position of region that will be plotted
+
+```{r fig.width=7.5, fig.height=2.5}
+i = which.max(top$quantile)
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = F,
+        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
+        axis.text.x = 9, axis.text.y = 9)
+```
+
+
+Change `legend.position` to get legend of logarithm reads in each position:
+
+```{r fig.width=7.5, fig.height=3.5}
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = F,
+        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'bottom',
+        axis.text.x = 9, axis.text.y = 9, legend.text = 7, legend.title = 8)
+```
+
+Change `bind.probes` to TRUE argument if you want binding each observations between two probes:
+
+```{r fig.width=7.5, fig.height=2.5}
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = T,
+                 smooth.methylation = T,
+  size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
+        axis.text.x = 9, axis.text.y = 9)
+```
+
+Change `smooth.methylation` to FALSE if you don't want smoothing observations:
+
+```{r fig.width=7.5, fig.height=2.5}
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = T,smooth.methylation = F,
+        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
+        axis.text.x = 9, axis.text.y = 9)
+```
+
+Other arguments are responsible for size of element on plots.
+
+# Session info
+
+```{r}
+devtools::session_info()
+```
+
+
+
+
+
+
+
+
+

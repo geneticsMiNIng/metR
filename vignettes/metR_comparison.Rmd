@@ -1,0 +1,254 @@
+---
+title: "metR: a deeper study"
+author: "Aleksandra Brodecka"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: simplex
+    toc: true
+    toc_depth: 3
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{metR_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+The `metR` package contains tools for comprehensive analysis of data from methylation studies. With the `metR` one can define regions, get basic statistics about methylation in them, plot methylation rate or rank these regions from the most interesting to the least one. 
+
+
+```{r, eval = F}
+devtools::install_github("geneticsMiNIng/metR")
+library(metR)
+library(kableExtra)
+library(knitr)
+```
+
+```{r, include=FALSE}
+library(metR)
+library(kableExtra)
+library(knitr)
+```
+
+# The data
+
+Data for this example are downloaded from the site: http://www.neuroepigenomics.org/methylomedb/download.html. We used 4 control samples: Control1 AC, Control2 AC, Control3 AC and Control4 AC and 4 disease samples: SCZ1 AC, SCZ2 AC, SCZ3 AC, SCZ4 AC. 
+
+
+In the `metR` package these samples are available in the `schizophrenia` data frame. Each row is a single methylation probe. Data from all control/disease samples are combined together. 
+
+To speed up calculations and shrink down the size of data we are using only probes from chromosome 1. The R code needed to download data from all samples can be found in the script https://github.com/geneticsMiNIng/metR/blob/master/examples/prep.MethylomeDB.R. The result of this script is a single data.frame `schizophrenia` that is included in metR package. The last column `category` indicates if data are from control samples ('control') or from disease samples ('disease').
+
+
+```{r fig.width=7.5, fig.height=2.5}
+data('schizophrenia')
+head(schizophrenia)
+```
+
+## Preprocessing
+
+The data requires some preprocessing. This can be done with the `preprocessing()` function.
+
+```{r}
+control <- schizophrenia[which(schizophrenia$category == 'control'), 1:6] 
+disease <- schizophrenia[which(schizophrenia$category == 'disease'), 1:6] 
+processed_schizophrenia <- preprocessing(control, disease)
+head(processed_schizophrenia)
+```
+
+# Tiles
+
+All statistics in the metR package are calculated for regions of DNA. Currently the `metR` package implements two functions that defines regions:
+
+* `create_tiles_max_gap()` creates list of regions rich in methylation probes. Regions are defined as probes spaced not farther than `gaps.length`,
+* `create_tiles_fixed_length()` creates list of regions of fixed length `tiles.length`.
+
+```{r}
+tiles_schizophrenia <- create_tiles_max_gap(processed_schizophrenia, gaps.length = 100)
+head(tiles_schizophrenia)
+```
+
+## Examples of differentially methylated regions
+
+Below we are presenting more advance example of comparison of results from different tests.
+
+We show 8 regions that are results of running metR package on schizophrenia data.
+
+```{r fig.width=7.5, fig.height=2.5}
+data.tiles.3 <- create_tiles_max_gap(processed_schizophrenia, gaps.length = 100)
+#stats.3 <- get_stats(data.tiles.3)
+data('find.DMR.results')
+find.DMR.results$Reg.Log.Beta <- find.DMR.results$Reg.Log %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+find.DMR.results$Reg.Mixed.Beta <- find.DMR.results$Reg.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+find.DMR.results$Reg.Corr.Mixed.Beta <- find.DMR.results$Reg.Corr.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
+
+get_top <- function(data, n, stats){
+  data %>% slice(1:n) %>%
+    left_join(stats, by = c('chr', 'start', 'end')) %>%
+    dplyr::select(chr, start, end, meth.cov, meth.max_x, meth.max_y  
+                  ,meth.mean_x, meth.mean_y, meth.min_x,
+                  meth.min_y, meth.sd_x, meth.sd_y, meth.diff,quantile)
+}
+
+
+top <- do.call(gdata::combine,lapply(find.DMR.results, get_top, n = 100, stats = stats.3))
+```
+
+### 1. Region with maximum coverage
+
+This region has the largest coverage from interesting areas. We have 394 observations. This region hasn't huge methylation diff in two samples but this difference is stable along the entire length.
+
+```{r echo = F}
+draw_show_table <- function(i,top,data){
+row <- top[i,]
+rownames(row) <- NULL
+row[5:14] <- round(row[5:14], 2)
+draw_methylation(data, top$chr[i], top$start[i], top$end[i], bind.probes = F,
+        size.x.dot = 3.5, size.y.dot = 2, plot.title = 13, axis.title.x = 12, axis.title.y = 12, legend.position = 'none',
+        axis.text.x = 9, axis.text.y = 9)
+
+print(kable_styling(kable(row[,1:8], "html" , bootstrap_options = "striped" , full_width = T), position = "left",
+font_size = 11) %>% row_spec(1, color = "black"))
+
+print(kable_styling(kable(row[,9:15], "html", bootstrap_options = "striped" , full_width = T), position = "left",
+font_size = 11) %>% row_spec(1, color = "black"))
+
+}
+```
+
+```{r fig.width=7.5, fig.height=2.5, results='asis'}
+draw_show_table(which.max(top$meth.cov),top,data)
+```
+
+### 2. Region with maximum mean of methylation rate in control sample
+
+This region has the largest mean of methylation rate in control sample from interesting areas. We have 104  observations and mean of methylation rate is equal 1. This means that all of 104 observations have methylation rate on the level 1!
+
+```{r fig.width=7.5, fig.height=2.5, results='asis'}
+draw_show_table(which.max(top$meth.mean_x),top,data)
+```
+
+### 3. Region with minimum mean of methylation rate in disease sample
+
+This region has the smallest mean of methylation rate in disease sample from interesting areas. We have 210 observations and mean of methylation rate is equal 0. This means that all of 210 observations have methylation rate on the level 0!
+
+This is reverse example to the previous one.
+
+```{r fig.width=7.5, fig.height=2.5, results='asis'}
+draw_show_table(which.min(top$meth.mean_y),top,data)
+```
+
+### 4. Region with maximum standard deviation of methylation rate in control sample
+
+We see very interesting regions below. 
+In this example methylation rate start from 0 in both sample and increase to 1 in control sample and 0.75 in disease sample.
+
+```{r fig.width=7.5, fig.height=2.5, results='asis'}
+draw_show_table(which.max(top$meth.sd_x),top,data)
+```
+
+### 5. Region with maximum methylation difference in two probes
+
+This area has only two observations but methylation difference between them is huge and equal 0.7.
+
+```{r fig.width=7.5, fig.height=2.5, results='asis'}
+draw_show_table(which.max(top$meth.diff),top,data)
+```
+
+### 6. Region with maximum rank function
+
+This area has maximum rank function. Rank function is based on quantile regression which uses information about number of observations in region. 
+In this example methylation difference between probes is the biggest with respect to number of observations.
+Methylation difference is close to methylation difference in previous example but has more observation (11 to 2). 
+
+```{r fig.width=7.5, fig.height=2.5, results='asis'}
+draw_show_table(which.max(top$quantile),top,data)
+```
+
+### 7. Region with maximum methylation range in control sample
+
+This region has the biggest methylation range in control sample from interesting areas. 
+We see that methylation rate in control sample starts from 1 and decreases to 0.
+In disease sample methylation rate starts from level 0.9 and decreases to 0.15.
+Curious observations is occurence that at the beginning of region we see bigger methylation in control sample and at the end of region reverse case.
+
+```{r fig.width=7.5, fig.height=2.5, results='asis'}
+draw_show_table(which.max(top$meth.max_x - top$meth.min_x),top,data)
+```
+
+### 8. Region with maximum methylation range in disease sample
+
+This region has the biggest methylation range in disease sample from interesting areas. 
+In the middle of region we can notice that methylation rate in disease sample is equal to 0 and in control is around 0.25. 
+At the beginning and at the end of regions methylation increases in two probes.
+
+```{r fig.width=7.5, fig.height=2.5, results='asis'}
+draw_show_table(which.max(top$meth.max_y - top$meth.min_y),top,data)
+```
+
+## Comparing all methods 
+
+We use 8 methods which are available in metR package:
+
+* Ttest - t-Student test on methylation.rate
+
+* Wilcoxon - Wilcoxon test on methylation.rate
+
+* KS - Kolmogorov-Smirnov test on methylation.rate
+
+Regression methods, where number of success are number of methylated citosines :
+
+* Reg.Log - standard logistic regression
+
+* Reg.Mixed - logistic regression where random effects are positions of chromosome
+
+* Reg.Corr.Mixed - logistic regression where random effects are positions of chromosome and correlation matrix between position is previously estimated and included in `metR` package
+
+These methods sorts regions based on p.value of grouping variable.
+Methods Reg.Log.Beta, Reg.Mixed.Beta, Reg.Corr.Mixed.Beta order regions based on beta coefficients of grouping variable. 
+
+```{r fig.width=7.5, fig.height=2.5}
+ggplot(top, aes(x = source, y = quantile)) + geom_boxplot(aes(fill = source))  + ggtitle('Distribution of rank rate by methods')  +
+   scale_fill_brewer(palette = "Set1") + theme_minimal()  + theme(title = element_text(size = 14), axis.title = element_text(size = 13),
+                           axis.text.y = element_text(size = 11), axis.text.x = element_text(size = 11, angle = 20) ,  legend.position = "None") +
+  labs(x="Method",y="Rank rate") + 
+  scale_x_discrete(limits=c('Reg.Mixed','Reg.Corr.Mixed.Beta','Reg.Corr.Mixed', 'KS', "Wilcoxon", 'Reg.Log.Beta', 'Reg.Mixed.Beta', 'Reg.Log', 'Ttest'))
+
+
+```
+
+```{r fig.width=7.5, fig.height=3.5}
+ggplot(top, aes(x = source, y = meth.diff)) + geom_boxplot(aes(fill = source))  + ggtitle('Distribution of methylation absolute difference by methods')  +
+   scale_fill_brewer(palette = "Set1") + theme_minimal()  + theme(title = element_text(size = 14), axis.title = element_text(size = 13),
+                           axis.text.y = element_text(size = 11), axis.text.x = element_text(size = 11, angle = 11) ,  legend.position = "None") +
+  labs(x="Method",y="Methylation difference") + 
+  scale_x_discrete(limits=c('Reg.Mixed','Reg.Corr.Mixed.Beta','Reg.Corr.Mixed', 'KS', "Wilcoxon", 'Ttest', 'Reg.Log', 'Reg.Log.Beta', 'Reg.Mixed.Beta'))
+```
+
+
+```{r fig.width=7.5, fig.height=3.5}
+ggplot(top, aes(x = source, y = meth.cov)) + geom_boxplot(aes(fill = source))  + ggtitle('Coverage distribution by methods')  +
+   scale_fill_brewer(palette = "Set1") + theme_minimal()  + theme(title = element_text(size = 14), axis.title = element_text(size = 13),
+                           axis.text.y = element_text(size = 11), axis.text.x = element_text(size = 11, angle = 20) ,  legend.position = "None") +
+  labs(x="Method",y="Coverage") + 
+  scale_x_discrete(limits=c('Reg.Corr.Mixed.Beta','Reg.Log.Beta','Reg.Mixed.Beta', 'Reg.Mixed', "KS", 'Reg.Log', 'Reg.Corr.Mixed', 'Ttest', 'Wilcoxon'))
+```
+
+We can show, that these method given very different results. The rank rate is very good if we use Ttest, Reg.Log, Reg.Mixed.Beta and Reg.Log.Beta methods. The biggest differences we see for methylation coverage. Wilcoxon test recommended regions that have the most observations ~ 200. Reg.Corr.Mixed.Beta and Reg.Log.Beta proposed smaller group - about 10 observations. If we check methylation difference, Reg.Log.Beta and Reg.Mixed.Beta present very large difference in recommended regions.
+
+# Session info
+
+```{r}
+devtools::session_info()
+```
+
+
+
+
+
+
+
+
+
