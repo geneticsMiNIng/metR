@@ -39,7 +39,18 @@ list object. Elements of list are results of given methods. The most interesting
 }
 \description{
 Finding DMR by Wilcoxon, t-Student, Kolmogorov-Smirnow tests or logistic regression, logistic regression with mixed models,
-logistic regression with mixed models with correlation matrix
+logistic regression with mixed models with correlation matrix.
+In Ttest, Wilcoxon and Ks are compared methylation rate between x and y prob on the same position and chromosome
+and null hypothesis is that mean (median, distribution respectively) of methylation rate.
+In these methods alternative hypothesis is two sided and these sorts regions based on criticial value.
+}
+\details{
+In regression methods, number of success are number of methylated citosines and failures are number of unmethylated citosines.
+Output from this methods is beta coefficient of indicator variable from regression model and criticial value from Wald test on indicator variable.
+Indicator variable is equal 1 if observations are from x prob and 0 otherwise. These methods order regions based on beta coefficients of
+grouping variable or p.values of grouping variable.
+In mixed models explantatory variable is only indicator variable and positions of chromosome are random effects.
+In standard logistic regression explantatory variables are also position of chromosome.
 }
 \examples{
 data('schizophrenia')

@@ -9,7 +9,7 @@ output:
     toc_depth: 3
     toc_float: true
 vignette: >
-  %\VignetteIndexEntry{metR_vignette}
+  %\VignetteIndexEntry{metR_comparison}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -44,57 +44,55 @@ To speed up calculations and shrink down the size of data we are using only prob
 
 ```{r fig.width=7.5, fig.height=2.5}
 data('schizophrenia')
-head(schizophrenia)
+
+kable_styling(kable(head(schizophrenia, 4), "html", bootstrap_options = "striped" , full_width = T), position = "left",
+font_size = 11) %>% row_spec(1:4, color = "black")
+
 ```
 
-## Preprocessing
+# Process data
 
-The data requires some preprocessing. This can be done with the `preprocessing()` function.
+To obtain interesting regions in subsection `Examples of differentially methylated regions` we runned 4 functions from `metR` package:
+
+* `preprocessing()` - preprocessing schizophrenia data
+
+* `create_tiles_max_gap()` - creating regions
+
+* `get_stats()` - getting basin statistics about created regions
+
+* `find_DMR()` - ranking regions from the most interesting to the least one by different methods
+
+Functions above are described in `metR_step_by_step` vignettes or in package documentation. 
+
+
 
 ```{r}
-control <- schizophrenia[which(schizophrenia$category == 'control'), 1:6] 
-disease <- schizophrenia[which(schizophrenia$category == 'disease'), 1:6] 
+control <- schizophrenia %>% filter(category == 'control') %>%
+  dplyr::select(-category)
+
+disease <- schizophrenia %>% filter(category == 'disease') %>%
+  dplyr::select(-category)
+
 processed_schizophrenia <- preprocessing(control, disease)
-head(processed_schizophrenia)
-```
 
-# Tiles
-
-All statistics in the metR package are calculated for regions of DNA. Currently the `metR` package implements two functions that defines regions:
-
-* `create_tiles_max_gap()` creates list of regions rich in methylation probes. Regions are defined as probes spaced not farther than `gaps.length`,
-* `create_tiles_fixed_length()` creates list of regions of fixed length `tiles.length`.
-
-```{r}
 tiles_schizophrenia <- create_tiles_max_gap(processed_schizophrenia, gaps.length = 100)
-head(tiles_schizophrenia)
-```
 
-## Examples of differentially methylated regions
-
-Below we are presenting more advance example of comparison of results from different tests.
-
-We show 8 regions that are results of running metR package on schizophrenia data.
-
-```{r fig.width=7.5, fig.height=2.5}
-data.tiles.3 <- create_tiles_max_gap(processed_schizophrenia, gaps.length = 100)
-#stats.3 <- get_stats(data.tiles.3)
+stats <- get_stats(tiles_schizophrenia)
 data('find.DMR.results')
 find.DMR.results$Reg.Log.Beta <- find.DMR.results$Reg.Log %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
 find.DMR.results$Reg.Mixed.Beta <- find.DMR.results$Reg.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
 find.DMR.results$Reg.Corr.Mixed.Beta <- find.DMR.results$Reg.Corr.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
 
-get_top <- function(data, n, stats){
-  data %>% slice(1:n) %>%
-    left_join(stats, by = c('chr', 'start', 'end')) %>%
-    dplyr::select(chr, start, end, meth.cov, meth.max_x, meth.max_y  
-                  ,meth.mean_x, meth.mean_y, meth.min_x,
-                  meth.min_y, meth.sd_x, meth.sd_y, meth.diff,quantile)
-}
+top <- do.call(gdata::combine,lapply(find.DMR.results, get_top, n = 100, stats = stats))
 
-
-top <- do.call(gdata::combine,lapply(find.DMR.results, get_top, n = 100, stats = stats.3))
 ```
+
+
+# Examples of differentially methylated regions
+
+Below we are presenting more advance example of comparison of results from different tests. 
+We are showing 8 regions that are results of running metR package on schizophrenia data.
+
 
 ### 1. Region with maximum coverage
 
@@ -119,7 +117,7 @@ font_size = 11) %>% row_spec(1, color = "black"))
 ```
 
 ```{r fig.width=7.5, fig.height=2.5, results='asis'}
-draw_show_table(which.max(top$meth.cov),top,data)
+draw_show_table(which.max(top$meth.cov),top,processed_schizophrenia)
 ```
 
 ### 2. Region with maximum mean of methylation rate in control sample
@@ -127,7 +125,7 @@ draw_show_table(which.max(top$meth.cov),top,data)
 This region has the largest mean of methylation rate in control sample from interesting areas. We have 104  observations and mean of methylation rate is equal 1. This means that all of 104 observations have methylation rate on the level 1!
 
 ```{r fig.width=7.5, fig.height=2.5, results='asis'}
-draw_show_table(which.max(top$meth.mean_x),top,data)
+draw_show_table(which.max(top$meth.mean_x),top,processed_schizophrenia)
 ```
 
 ### 3. Region with minimum mean of methylation rate in disease sample
@@ -137,7 +135,7 @@ This region has the smallest mean of methylation rate in disease sample from int
 This is reverse example to the previous one.
 
 ```{r fig.width=7.5, fig.height=2.5, results='asis'}
-draw_show_table(which.min(top$meth.mean_y),top,data)
+draw_show_table(which.min(top$meth.mean_y),top,processed_schizophrenia)
 ```
 
 ### 4. Region with maximum standard deviation of methylation rate in control sample
@@ -146,7 +144,7 @@ We see very interesting regions below.
 In this example methylation rate start from 0 in both sample and increase to 1 in control sample and 0.75 in disease sample.
 
 ```{r fig.width=7.5, fig.height=2.5, results='asis'}
-draw_show_table(which.max(top$meth.sd_x),top,data)
+draw_show_table(which.max(top$meth.sd_x),top,processed_schizophrenia)
 ```
 
 ### 5. Region with maximum methylation difference in two probes
@@ -154,7 +152,7 @@ draw_show_table(which.max(top$meth.sd_x),top,data)
 This area has only two observations but methylation difference between them is huge and equal 0.7.
 
 ```{r fig.width=7.5, fig.height=2.5, results='asis'}
-draw_show_table(which.max(top$meth.diff),top,data)
+draw_show_table(which.max(top$meth.diff),top,processed_schizophrenia)
 ```
 
 ### 6. Region with maximum rank function
@@ -164,7 +162,7 @@ In this example methylation difference between probes is the biggest with respec
 Methylation difference is close to methylation difference in previous example but has more observation (11 to 2). 
 
 ```{r fig.width=7.5, fig.height=2.5, results='asis'}
-draw_show_table(which.max(top$quantile),top,data)
+draw_show_table(which.max(top$quantile),top,processed_schizophrenia)
 ```
 
 ### 7. Region with maximum methylation range in control sample
@@ -175,7 +173,7 @@ In disease sample methylation rate starts from level 0.9 and decreases to 0.15.
 Curious observations is occurence that at the beginning of region we see bigger methylation in control sample and at the end of region reverse case.
 
 ```{r fig.width=7.5, fig.height=2.5, results='asis'}
-draw_show_table(which.max(top$meth.max_x - top$meth.min_x),top,data)
+draw_show_table(which.max(top$meth.max_x - top$meth.min_x),top,processed_schizophrenia)
 ```
 
 ### 8. Region with maximum methylation range in disease sample
@@ -185,29 +183,12 @@ In the middle of region we can notice that methylation rate in disease sample is
 At the beginning and at the end of regions methylation increases in two probes.
 
 ```{r fig.width=7.5, fig.height=2.5, results='asis'}
-draw_show_table(which.max(top$meth.max_y - top$meth.min_y),top,data)
+draw_show_table(which.max(top$meth.max_y - top$meth.min_y),top,processed_schizophrenia)
 ```
 
-## Comparing all methods 
+# Comparing all methods 
 
-We use 8 methods which are available in metR package:
-
-* Ttest - t-Student test on methylation.rate
-
-* Wilcoxon - Wilcoxon test on methylation.rate
-
-* KS - Kolmogorov-Smirnov test on methylation.rate
-
-Regression methods, where number of success are number of methylated citosines :
-
-* Reg.Log - standard logistic regression
-
-* Reg.Mixed - logistic regression where random effects are positions of chromosome
-
-* Reg.Corr.Mixed - logistic regression where random effects are positions of chromosome and correlation matrix between position is previously estimated and included in `metR` package
-
-These methods sorts regions based on p.value of grouping variable.
-Methods Reg.Log.Beta, Reg.Mixed.Beta, Reg.Corr.Mixed.Beta order regions based on beta coefficients of grouping variable. 
+Methods above are described in metR_step_by_step or in documentation `find_DMR()`.
 
 ```{r fig.width=7.5, fig.height=2.5}
 ggplot(top, aes(x = source, y = quantile)) + geom_boxplot(aes(fill = source))  + ggtitle('Distribution of rank rate by methods')  +

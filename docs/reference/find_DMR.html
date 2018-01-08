@@ -39,7 +39,7 @@
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top navbar-mi2" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -47,10 +47,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">metR</a>
+	  <a class = "navbar-mi2logo" href="http://mi2.mini.pw.edu.pl/">
+        <img src = "https://github.com/mi2-warsaw/MI2template/blob/master/inst/pkgdown/assets/MI2logo.jpg?raw=true" alt = "MI2" height = 46 title = "MI2">
+	  </a>
+      <a class="navbar-brand navbar-mi2" href="../index.html">metR</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="navbar-mi2 nav navbar-nav">
         <li>
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
@@ -68,7 +71,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/metR_vignette.html">Introduction to metR</a>
+      <a href="../articles/metR_comparison.html">metR: a deeper study</a>
+    </li>
+    <li>
+      <a href="../articles/metR_step_by_step.html">metR: step by step</a>
     </li>
   </ul>
 </li>
@@ -97,7 +103,10 @@
 
     
     <p>Finding DMR by Wilcoxon, t-Student, Kolmogorov-Smirnow tests or logistic regression, logistic regression with mixed models,
-logistic regression with mixed models with correlation matrix</p>
+logistic regression with mixed models with correlation matrix.
+In Ttest, Wilcoxon and Ks are compared methylation rate between x and y prob on the same position and chromosome
+and null hypothesis is that mean (median, distribution respectively) of methylation rate.
+In these methods alternative hypothesis is two sided and these sorts regions based on criticial value.</p>
     
 
     <pre class="usage"><span class='fu'>find_DMR</span>(<span class='no'>data</span>, <span class='no'>methods</span>, <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>p.value.reg.mixed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -150,6 +159,15 @@ did not convergence well</p></td>
 
     <p>list object. Elements of list are results of given methods. The most interesting regions are on the top</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>In regression methods, number of success are number of methylated citosines and failures are number of unmethylated citosines.
+Output from this methods is beta coefficient of indicator variable from regression model and criticial value from Wald test on indicator variable.
+Indicator variable is equal 1 if observations are from x prob and 0 otherwise. These methods order regions based on beta coefficients of
+grouping variable or p.values of grouping variable.
+In mixed models explantatory variable is only indicator variable and positions of chromosome are random effects.
+In standard logistic regression explantatory variables are also position of chromosome.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='st'>'schizophrenia'</span>)
@@ -169,8 +187,8 @@ did not convergence well</p></td>
 #&gt; [1] "Started: Finding DMR by KS test"
 #&gt; [1] "Started: Finding DMR by Logistic Regression"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
-#&gt; |================                                      | 31% ~4 s remaining     |==================                                    | 34% ~4 s remaining     |======================                                | 41% ~3 s remaining     |=============================                         | 55% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~0 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
-#&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Wilcoxon
+#&gt; |===============================                       | 59% ~1 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~0 s remaining     |==============================================        | 86% ~0 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
+#&gt; |====================                                  | 38% ~4 s remaining     |======================                                | 41% ~3 s remaining     |==========================                            | 48% ~3 s remaining     |===============================                       | 59% ~2 s remaining     |=====================================                 | 69% ~1 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Wilcoxon
 #&gt; # A tibble: 29 x 4
 #&gt;      chr  start    end    p.value
 #&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
@@ -281,7 +299,7 @@ did not convergence well</p></td>
 <span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>p.value.reg.mixed</span> <span class='kw'>=</span> <span class='fl'>0.02</span>, <span class='kw'>p.value.reg.corr.mixed</span><span class='kw'>=</span><span class='fl'>0.03</span>)</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Logistic Regression"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
-#&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Reg.Log
+#&gt; |====================                                  | 38% ~3 s remaining     |======================                                | 41% ~3 s remaining     |==========================                            | 48% ~3 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Reg.Log
 #&gt; # A tibble: 5 x 5
 #&gt;     chr start   end      p.value beta.coef
 #&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
@@ -342,6 +360,8 @@ did not convergence well</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create regions for testing methylation difference — create_tiles_max_gap • metR</title>
+<title>Get n top region — get_top • metR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,31 +98,35 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create regions for testing methylation difference</h1>
+    <h1>Get n top region</h1>
     </div>
 
     
-    <p>The same regions are observations that maximum difference position is gaps.length argument</p>
+    <p>Get n top region from result of find_DMR function.</p>
     
 
-    <pre class="usage"><span class='fu'>create_tiles_max_gap</span>(<span class='no'>data</span>, <span class='no'>gaps.length</span>)</pre>
+    <pre class="usage"><span class='fu'>get_top</span>(<span class='no'>data</span>, <span class='no'>n</span>, <span class='no'>stats</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate. This dataframe is result of function preprocessing.</p></td>
+      <td><p>dataframe from output of find_DMR function with given method</p></td>
     </tr>
     <tr>
-      <th>gaps.length</th>
-      <td><p>integer number that specifies maximum difference position between the same methylation regions</p></td>
+      <th>n</th>
+      <td><p>number of regions to return</p></td>
+    </tr>
+    <tr>
+      <th>stats</th>
+      <td><p>data.frame with basic statisics about region. This is result of running get_stats function</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data.frame from parameter data with extra column tiles that is region id number within chromosomes</p>
+    <p>data.frame with n top region with their basic statistics</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -134,13 +138,17 @@
  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>category</span>)
 
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='preprocessing.html'>preprocessing</a></span>(<span class='no'>control</span>, <span class='no'>disease</span>)
-<span class='fu'>head</span>(<span class='fu'>create_tiles_max_gap</span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='output co'>#&gt;         chr   poz prob no meth unmeth meth.rate tiles
-#&gt; chr1.1 chr1 81412    x 35   29      6 0.8285714     1
-#&gt; chr1.2 chr1 81412    y 76   66     10 0.8684211     1
-#&gt; chr1.3 chr1 81442    x 35   29      6 0.8285714     1
-#&gt; chr1.4 chr1 81442    y 76   66     10 0.8684211     1
-#&gt; chr1.5 chr1 81546    x 35   29      6 0.8285714     2
-#&gt; chr1.6 chr1 81546    y 76   66     10 0.8684211     2</div></pre>
+<span class='no'>data.tiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_tiles_max_gap.html'>create_tiles_max_gap</a></span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='no'>data.tiles.small</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>tiles</span> <span class='kw'>&lt;</span> <span class='fl'>30</span>)
+<span class='no'>stats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_stats.html'>get_stats</a></span>(<span class='no'>data.tiles.small</span>)
+<span class='no'>dmr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='find_DMR.html'>find_DMR</a></span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Ttest'</span>, <span class='st'>'KS'</span>, <span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>))</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Wilcoxon test"
+#&gt; [1] "Started: Finding DMR by t-test"
+#&gt; [1] "Started: Finding DMR by KS test"
+#&gt; [1] "Started: Finding DMR by Logistic Regression"
+#&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
+#&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
+#&gt; |======================                                | 41% ~3 s remaining     |==========================                            | 48% ~3 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='input'><span class='fu'>get_top</span>(<span class='no'>find_DMR</span>$<span class='no'>Wilcoxon</span>, <span class='fl'>3</span>, <span class='no'>stats</span>)</div><div class='output co'>#&gt; <span class='error'>Error in find_DMR$Wilcoxon: obiekt typu 'closure' nie jest ustawialny</span></div><div class='input'><span class='fu'>get_top</span>(<span class='no'>find_DMR</span>$<span class='no'>Reg.Log</span>, <span class='fl'>3</span>, <span class='no'>stats</span>)</div><div class='output co'>#&gt; <span class='error'>Error in find_DMR$Reg.Log: obiekt typu 'closure' nie jest ustawialny</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

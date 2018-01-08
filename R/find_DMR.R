@@ -1,7 +1,17 @@
 #' Finding DMR
 #'
 #' Finding DMR by Wilcoxon, t-Student, Kolmogorov-Smirnow tests or logistic regression, logistic regression with mixed models,
-#' logistic regression with mixed models with correlation matrix
+#' logistic regression with mixed models with correlation matrix.
+#' In Ttest, Wilcoxon and Ks are compared methylation rate between x and y prob on the same position and chromosome
+#' and null hypothesis is that mean (median, distribution respectively) of methylation rate.
+#' In these methods alternative hypothesis is two sided and these sorts regions based on criticial value.
+#'
+#' In regression methods, number of success are number of methylated citosines and failures are number of unmethylated citosines.
+#' Output from this methods is beta coefficient of indicator variable from regression model and criticial value from Wald test on indicator variable.
+#' Indicator variable is equal 1 if observations are from x prob and 0 otherwise. These methods order regions based on beta coefficients of
+#' grouping variable or p.values of grouping variable.
+#' In mixed models explantatory variable is only indicator variable and positions of chromosome are random effects.
+#' In standard logistic regression explantatory variables are also position of chromosome.
 #' @param data There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
 #' This dataframe is result of function preprocessing.
 #' 2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
@@ -54,6 +64,9 @@ find_DMR <- function(data, methods, p.value.log.reg = NULL,
 
   check_data_without_tiles(data[,1:7])
   check_tiles_in_data(data)
+  check_args_find_DMR(methods, p.value.log.reg,
+                                  p.value.reg.mixed, p.value.reg.corr.mixed,
+                                  beta.coef.max)
   data <- group_data(data, prob = F)
 
 find_DMR_given_methods(data, methods, p.value.log.reg,p.value.reg.mixed, p.value.reg.corr.mixed,
