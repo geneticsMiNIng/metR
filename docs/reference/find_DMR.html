@@ -187,8 +187,13 @@ In standard logistic regression explantatory variables are also position of chro
 #&gt; [1] "Started: Finding DMR by KS test"
 #&gt; [1] "Started: Finding DMR by Logistic Regression"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
+<<<<<<< HEAD
 #&gt; |====================================================  | 97% ~0 s remaining     [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
 #&gt; |======================                                | 41% ~3 s remaining     |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Wilcoxon
+=======
+#&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
+#&gt; |==========================                            | 48% ~3 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Wilcoxon
+>>>>>>> eaba4c4847b664aaeed158990fb581ecda4dedda
 #&gt; # A tibble: 29 x 4
 #&gt;      chr  start    end    p.value
 #&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
@@ -278,28 +283,31 @@ In standard logistic regression explantatory variables are also position of chro
 #&gt; 11  chr1 219816 219880 9.370590e-01 0.04879016
 #&gt; 
 #&gt; $Reg.Corr.Mixed
-#&gt; # A tibble: 13 x 5
+#&gt; # A tibble: 12 x 5
 #&gt;      chr  start    end     p.value  beta.coef
 #&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
 #&gt;  1  chr1  82959  83254 0.007918476  2.2600171
-#&gt;  2  chr1  84100  84338 0.010222483  3.0848526
-#&gt;  3  chr1  83588  83698 0.010380179  3.2544319
-#&gt;  4  chr1  86359  86505 0.036781488  5.3136593
-#&gt;  5  chr1  87096  87175 0.052391053  2.4186572
-#&gt;  6  chr1  81698  81863 0.065241461  0.8510306
-#&gt;  7  chr1 220557 220666 0.112228905 -0.4947742
-#&gt;  8  chr1  85472  85575 0.154777532  2.6553906
-#&gt;  9  chr1  83880  83980 0.188767710  2.6947221
-#&gt; 10  chr1  81984  82025 0.260540995  1.0858214
-#&gt; 11  chr1 219816 219880 0.343682945 -0.2581625
-#&gt; 12  chr1 220872 220952 0.450486788 -0.6860944
-#&gt; 13  chr1 221169 221365 0.712882389  0.1152671
+#&gt;  2  chr1  83588  83698 0.010380179  3.2544319
+#&gt;  3  chr1  86359  86505 0.036781488  5.3136593
+#&gt;  4  chr1  87096  87175 0.052391053  2.4186572
+#&gt;  5  chr1  81698  81863 0.065166268  0.8531988
+#&gt;  6  chr1 220557 220666 0.112228905 -0.4947742
+#&gt;  7  chr1  85472  85575 0.154777532  2.6553906
+#&gt;  8  chr1  83880  83980 0.188767710  2.6947221
+#&gt;  9  chr1  81984  82025 0.260540995  1.0858214
+#&gt; 10  chr1 219816 219880 0.343682945 -0.2581625
+#&gt; 11  chr1 220872 220952 0.450486788 -0.6860944
+#&gt; 12  chr1 221169 221365 0.712882389  0.1152671
 #&gt; </div><div class='input'>
 <span class='co'>#finding DMR by 'Reg.Log', 'Reg.Mixed', 'Reg.Corr.Mixed'  with sorting on beta values</span>
 <span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>p.value.reg.mixed</span> <span class='kw'>=</span> <span class='fl'>0.02</span>, <span class='kw'>p.value.reg.corr.mixed</span><span class='kw'>=</span><span class='fl'>0.03</span>)</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Logistic Regression"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
 #&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
+<<<<<<< HEAD
 #&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Reg.Log
+=======
+#&gt; |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |==========================================            | 79% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='output co'>#&gt; $Reg.Log
+>>>>>>> eaba4c4847b664aaeed158990fb581ecda4dedda
 #&gt; # A tibble: 5 x 5
 #&gt;     chr start   end      p.value beta.coef
 #&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
@@ -320,12 +328,11 @@ In standard logistic regression explantatory variables are also position of chro
 #&gt; 5  chr1 82959 83254 1.181530e-04  1.566878
 #&gt; 
 #&gt; $Reg.Corr.Mixed
-#&gt; # A tibble: 3 x 5
+#&gt; # A tibble: 2 x 5
 #&gt;     chr start   end     p.value beta.coef
 #&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;
 #&gt; 1  chr1 83588 83698 0.010380179  3.254432
-#&gt; 2  chr1 84100 84338 0.010222483  3.084853
-#&gt; 3  chr1 82959 83254 0.007918476  2.260017
+#&gt; 2  chr1 82959 83254 0.007918476  2.260017
 #&gt; </div><div class='input'>
 <span class='co'>#finding DMR only by 'Reg.Log' with sorting on beta values and 'Wilcoxon' with sorting on p.values</span>
 <span class='fu'>find_DMR</span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Reg.Log'</span>), <span class='kw'>p.value.log.reg</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Wilcoxon test"

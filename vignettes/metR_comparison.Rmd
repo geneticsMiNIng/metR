@@ -26,7 +26,7 @@ library(kableExtra)
 library(knitr)
 ```
 
-```{r, include=FALSE}
+```{r}
 library(metR)
 library(kableExtra)
 library(knitr)
@@ -83,7 +83,7 @@ find.DMR.results$Reg.Log.Beta <- find.DMR.results$Reg.Log %>% filter(p.value < 0
 find.DMR.results$Reg.Mixed.Beta <- find.DMR.results$Reg.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
 find.DMR.results$Reg.Corr.Mixed.Beta <- find.DMR.results$Reg.Corr.Mixed %>% filter(p.value < 0.001) %>% arrange(-abs(beta.coef))
 
-top <- do.call(gdata::combine,lapply(find.DMR.results, get_top, n = 100, stats = stats))
+top <- do.call(gdata::combine,lapply(find.DMR.results, metR::get_top, n = 100, stats = stats))
 
 ```
 
