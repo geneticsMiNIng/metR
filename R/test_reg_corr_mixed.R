@@ -23,13 +23,13 @@
 #' data('mean.acf.chr')
 #' acf <- mean.acf.chr[-1]
 #' data.test <- data.tiles %>% filter(tiles == 10)
-#' reg_corr_mixed(data.test, acf)
+#' test_reg_corr_mixed(data.test, acf)
 #' # or by some self-defined regions:
 #' data.test.2 <- data.tiles %>% filter(chr == 'chr1', poz > 80000, poz < 82000)
-#' reg_corr_mixed(data.test.2, acf)
+#' test_reg_corr_mixed(data.test.2, acf)
 
 
-reg_corr_mixed <- function(data, acf){
+test_reg_corr_mixed <- function(data, acf){
 
   data %<>% arrange(prob, poz)
 

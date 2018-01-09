@@ -25,11 +25,11 @@ find_DMR_Reg_Log <- function(data, p.value.log.reg, beta.coef.max){
   print("Started: Finding DMR by Logistic Regression")
   suppressWarnings(
   if (!is.null(p.value.log.reg)){
-    data %>% do(reg_log(data=.)) %>%
+    data %>% do(test_reg_log(data=.)) %>%
       filter(p.value < p.value.log.reg, !is.nan(p.value),
              abs(beta.coef) < beta.coef.max) %>% arrange(-abs(beta.coef)) %>% ungroup()
   }else{
-    data %>% do(reg_log(data=.)) %>%
+    data %>% do(test_reg_log(data=.)) %>%
       filter(!is.nan(p.value),
              abs(beta.coef) < beta.coef.max) %>% arrange(p.value) %>% ungroup()}
 )}
@@ -40,11 +40,11 @@ find_DMR_Reg_Mixed <- function(data, p.value.reg.mixed, beta.coef.max){
 
   suppressWarnings(
   if (!is.null(p.value.reg.mixed)){
-    data %>% do(reg_mixed(data=.)) %>%
+    data %>% do(test_reg_mixed(data=.)) %>%
       filter(p.value < p.value.reg.mixed, !is.nan(p.value),
              abs(beta.coef) < beta.coef.max) %>% arrange(-abs(beta.coef)) %>% ungroup()
   }else{
-    data %>% do(reg_mixed(data=.)) %>%
+    data %>% do(test_reg_mixed(data=.)) %>%
       filter(!is.nan(p.value),
              abs(beta.coef) < beta.coef.max) %>% arrange(p.value) %>% ungroup()}
   )}
@@ -56,11 +56,11 @@ find_DMR_Reg_Corr_Mixed <- function(data, p.value.reg.corr.mixed, beta.coef.max)
   acf <- mean.acf.chr[-1]
   suppressWarnings(
   if (!is.null(p.value.reg.corr.mixed)){
-    data %>% do(reg_corr_mixed(data=., acf = acf)) %>%
+    data %>% do(test_reg_corr_mixed(data=., acf = acf)) %>%
       filter(p.value < p.value.reg.corr.mixed, !is.nan(p.value),
              abs(beta.coef) < beta.coef.max) %>% arrange(-abs(beta.coef)) %>% ungroup()
   }else{
-    data %>% do(reg_corr_mixed(data=., acf = acf)) %>%
+    data %>% do(test_reg_corr_mixed(data=., acf = acf)) %>%
       filter(!is.nan(p.value),
              abs(beta.coef) < beta.coef.max) %>% arrange(p.value) %>% ungroup()}
  )}

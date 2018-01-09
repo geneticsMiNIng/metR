@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get n top region — get_top • metR</title>
+<title>Logistic regression results for methylation data — test_reg_log • metR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,35 +98,31 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get n top region</h1>
+    <h1>Logistic regression results for methylation data</h1>
     </div>
 
     
-    <p>Get n top region from result of find_DMR function.</p>
+    <p>Get p.value and beta coefficient from grouping variable from logistic regression based on number of methylated and unmethylated citozines in two probes.
+This function doesn't respect tiles or tiles.common column. This function is using in find.DMR and can be used separately.</p>
     
 
-    <pre class="usage"><span class='fu'>get_top</span>(<span class='no'>data</span>, <span class='no'>n</span>, <span class='no'>stats</span>)</pre>
+    <pre class="usage"><span class='fu'>test_reg_log</span>(<span class='no'>data</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>dataframe from output of find_DMR function with given method</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p>number of regions to return</p></td>
-    </tr>
-    <tr>
-      <th>stats</th>
-      <td><p>data.frame with basic statisics about region. This is result of running get_stats function</p></td>
+      <td><p>There are two options:  1. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate.
+This dataframe is result of function preprocessing.
+2. dataframe with specific columns: chr, poz, prob, no, meth, unmeth, meth.rate, tiles and possible tiles.common columns. This dataframe is result of function create.tiles.min.gap or
+create.tiles.fixed.length.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data.frame with n top region with their basic statistics</p>
+    <p>vector with p.value and beta coef. from grouping variable from logistic regression or two-elemented vector of na values if something goes wrong</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -139,16 +135,12 @@
 
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='preprocessing.html'>preprocessing</a></span>(<span class='no'>control</span>, <span class='no'>disease</span>)
 <span class='no'>data.tiles</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='create_tiles_max_gap.html'>create_tiles_max_gap</a></span>(<span class='no'>data</span>, <span class='kw'>gaps.length</span> <span class='kw'>=</span> <span class='fl'>100</span>)
-<span class='no'>data.tiles.small</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>tiles</span> <span class='kw'>&lt;</span> <span class='fl'>30</span>)
-<span class='no'>stats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_stats.html'>get_stats</a></span>(<span class='no'>data.tiles.small</span>)
-<span class='no'>dmr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='find_DMR.html'>find_DMR</a></span>(<span class='no'>data.tiles.small</span>, <span class='fu'>c</span>(<span class='st'>'Wilcoxon'</span>, <span class='st'>'Ttest'</span>, <span class='st'>'KS'</span>, <span class='st'>'Reg.Log'</span>, <span class='st'>'Reg.Mixed'</span>, <span class='st'>'Reg.Corr.Mixed'</span>))</div><div class='output co'>#&gt; [1] "Started: Finding DMR by Wilcoxon test"
-#&gt; [1] "Started: Finding DMR by t-test"
-#&gt; [1] "Started: Finding DMR by KS test"
-#&gt; [1] "Started: Finding DMR by Logistic Regression"
-#&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects"
-#&gt; [1] "Started: Finding DMR by Logistic Regression with Mixed Effects with Correlation Matrix"
-#&gt; |======================                                | 41% ~3 s remaining     |==========================                            | 48% ~2 s remaining     |===============================                       | 59% ~2 s remaining     |=================================                     | 62% ~2 s remaining     |=======================================               | 72% ~1 s remaining     |========================================              | 76% ~1 s remaining     |============================================          | 83% ~1 s remaining     |==============================================        | 86% ~1 s remaining     |================================================      | 90% ~0 s remaining     |======================================================|100% ~0 s remaining     </div><div class='input'><span class='fu'>get_top</span>(<span class='no'>find_DMR</span>$<span class='no'>Wilcoxon</span>, <span class='fl'>3</span>, <span class='no'>stats</span>)</div><div class='output co'>#&gt; <span class='error'>Error in find_DMR$Wilcoxon: obiekt typu 'closure' nie jest ustawialny</span></div><div class='input'><span class='fu'>get_top</span>(<span class='no'>find_DMR</span>$<span class='no'>Reg.Log</span>, <span class='fl'>3</span>, <span class='no'>stats</span>)</div><div class='output co'>#&gt; <span class='error'>Error in find_DMR$Reg.Log: obiekt typu 'closure' nie jest ustawialny</span></div><div class='input'>
-</div></pre>
+<span class='no'>data.test</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>tiles</span> <span class='kw'>==</span> <span class='fl'>10</span>)
+<span class='fu'>test_reg_log</span>(<span class='no'>data.test</span>)</div><div class='output co'>#&gt;      p.value beta.coef
+#&gt; 1 0.01784013  1.651605</div><div class='input'><span class='co'># or by some self-defined regions:</span>
+<span class='no'>data.test.2</span> <span class='kw'>&lt;-</span> <span class='no'>data.tiles</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>chr</span> <span class='kw'>==</span> <span class='st'>'chr1'</span>, <span class='no'>poz</span> <span class='kw'>&gt;</span> <span class='fl'>80000</span>, <span class='no'>poz</span> <span class='kw'>&lt;</span> <span class='fl'>100000</span>)
+<span class='fu'>test_reg_log</span>(<span class='no'>data.test.2</span>)</div><div class='output co'>#&gt;        p.value beta.coef
+#&gt; 1 7.409786e-18 0.9821475</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
